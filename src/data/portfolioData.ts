@@ -45,8 +45,60 @@ export interface ArchitectureLayer {
   appliedIn: string;
 }
 
+export interface ServiceItem {
+  id: string;
+  icon: 'laravel' | 'mern' | 'erp' | 'payments' | 'database' | 'pos';
+  title: string;
+  description: string;
+}
+
 export const RESUME_PDF_URL = '/assets/aistudio/Mohammed_Ilyas_Resume__1__c1e233fa.pdf';
 export const RESUME_DOWNLOAD_FILENAME = 'Mohammed_Ilyas_Resume.pdf';
+
+export const SERVICES: ServiceItem[] = [
+  {
+    id: 'laravel-php',
+    icon: 'laravel',
+    title: 'Laravel & PHP Engineering',
+    description:
+      'Production web platforms, CodeIgniter enterprise apps, modular backend logic, and 2FA-protected role-based access control.',
+  },
+  {
+    id: 'mern-stack',
+    icon: 'mern',
+    title: 'MERN & Modern Frontend',
+    description:
+      'Responsive React.js, Next.js, TypeScript, Tailwind, and Shadcn UI applications engineered for speed and Core Web Vitals.',
+  },
+  {
+    id: 'erp-portals',
+    icon: 'erp',
+    title: 'Enterprise ERP & Portals',
+    description:
+      'High-volume government recruitment portals and coaching center ERPs built to streamline applicant data and internal workflows.',
+  },
+  {
+    id: 'payments-apis',
+    icon: 'payments',
+    title: 'REST APIs & Payments',
+    description:
+      'Clean REST API design, e-commerce checkout re-engineering, and secure ICICI payment gateway integrations for reliable transactions.',
+  },
+  {
+    id: 'database-cloud',
+    icon: 'database',
+    title: 'Database & Cloud Architecture',
+    description:
+      'Schema design and query optimization across MySQL, MS SQL Server, PostgreSQL, MongoDB, AWS S3, RDS, and Linux VPS.',
+  },
+  {
+    id: 'pos-ai',
+    icon: 'pos',
+    title: 'POS Hardware & AI Workflows',
+    description:
+      'Hospitality kitchen ordering with direct Epson ePOS SDK receipt printing alongside modern Claude Code, Codex, and MCP automation.',
+  },
+];
 
 export const PROFILE = {
   name: 'Mohammed Ilyas',

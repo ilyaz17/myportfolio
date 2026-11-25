@@ -7,30 +7,16 @@ interface NavbarProps {
 }
 
 const NAV_LINKS = [
-  { href: '#projects', id: 'projects', label: 'Projects' },
-  { href: '#experience', id: 'experience', label: 'Experience' },
-  { href: '#skills', id: 'skills', label: 'Skills' },
+  { href: '#home', id: 'home', label: 'Home' },
+  { href: '#about', id: 'about', label: 'About' },
+  { href: '#resume', id: 'resume', label: 'Resume' },
+  { href: '#portfolio', id: 'portfolio', label: 'Portfolio' },
   { href: '#contact', id: 'contact', label: 'Contact' },
 ];
 
 export function Navbar({ onOpenResume }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('');
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollable =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (scrollable > 0) {
-        setScrollProgress(Math.min(1, Math.max(0, window.scrollY / scrollable)));
-      }
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
     const sectionElements = NAV_LINKS.map((link) =>
@@ -58,18 +44,18 @@ export function Navbar({ onOpenResume }: NavbarProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#08090B]/88 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-8 px-6">
+    <header className="sticky top-0 z-40 border-b border-white/8 bg-[#070D1B]/90 backdrop-blur-md">
+      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-8 px-6">
         <a
-          href="#top"
-          className="font-display text-lg font-semibold tracking-tight text-[#F7F8FA] transition-colors hover:text-[#F2B705] whitespace-nowrap shrink-0"
+          href="#home"
+          className="font-display text-xl font-bold tracking-tight text-[#FDFEFF] transition-colors hover:text-[#FEC544] whitespace-nowrap shrink-0"
         >
-          {PROFILE.name}
+          <span className="text-[#FEC544]">M</span>ohammed {PROFILE.name.split(' ')[1]}
         </a>
 
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex items-center gap-8 text-sm font-medium text-[#A1A9B8]"
+          className="hidden md:flex items-center gap-8 text-sm font-medium text-[#FDFEFF]"
         >
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.id;
@@ -78,10 +64,8 @@ export function Navbar({ onOpenResume }: NavbarProps) {
                 key={link.href}
                 href={link.href}
                 aria-current={isActive ? 'location' : undefined}
-                className={`relative py-1 whitespace-nowrap shrink-0 transition-colors duration-150 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-[#F2B705] after:transition-transform after:duration-200 ${
-                  isActive
-                    ? 'text-[#F7F8FA] after:scale-x-100'
-                    : 'hover:text-[#F7F8FA] after:scale-x-0 hover:after:scale-x-100'
+                className={`py-1 whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                  isActive ? 'text-[#FEC544]' : 'text-[#D6DAE2] hover:text-[#FEC544]'
                 }`}
               >
                 {link.label}
@@ -94,7 +78,7 @@ export function Navbar({ onOpenResume }: NavbarProps) {
           <button
             type="button"
             onClick={onOpenResume}
-            className="inline-flex min-h-[40px] items-center justify-center rounded-lg bg-[#F2B705] px-4 py-2 text-sm font-semibold text-[#08090B] transition-colors duration-150 hover:bg-[#FFD043] whitespace-nowrap shrink-0 cursor-pointer"
+            className="inline-flex min-h-[40px] items-center justify-center rounded-full bg-[#FEC544] px-5 py-2 text-sm font-semibold text-[#070D1B] transition-colors duration-150 hover:bg-[#FFD369] whitespace-nowrap shrink-0 cursor-pointer"
           >
             Resume
           </button>
@@ -105,7 +89,7 @@ export function Navbar({ onOpenResume }: NavbarProps) {
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation"
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 text-[#F4F5F7] transition-colors hover:border-white/30 hover:bg-white/5 md:hidden cursor-pointer"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/15 text-[#FDFEFF] transition-colors hover:border-[#FEC544]/50 md:hidden cursor-pointer"
           >
             {mobileMenuOpen ? (
               <X className="h-5 w-5" aria-hidden="true" />
@@ -116,22 +100,11 @@ export function Navbar({ onOpenResume }: NavbarProps) {
         </div>
       </div>
 
-      {/* Subtle reading progress hairline */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[1.5px] bg-transparent"
-      >
-        <div
-          className="h-full origin-left bg-[#F2B705]/80 transition-transform duration-150 ease-out"
-          style={{ transform: `scaleX(${scrollProgress})` }}
-        />
-      </div>
-
       {mobileMenuOpen && (
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="border-t border-white/10 bg-[#0D0F14] px-6 py-4 md:hidden"
+          className="border-t border-white/10 bg-[#0A101E] px-6 py-4 md:hidden"
         >
           <ul className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
@@ -139,12 +112,13 @@ export function Navbar({ onOpenResume }: NavbarProps) {
                 <a
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex min-h-[44px] items-center justify-between text-base font-medium text-[#D1D6DF] transition-colors hover:text-[#F2B705]"
+                  className={`flex min-h-[44px] items-center text-base font-medium transition-colors ${
+                    activeSection === link.id
+                      ? 'text-[#FEC544]'
+                      : 'text-[#D6DAE2] hover:text-[#FEC544]'
+                  }`}
                 >
-                  <span>{link.label}</span>
-                  {activeSection === link.id && (
-                    <span className="font-mono text-xs text-[#F2B705]">Current</span>
-                  )}
+                  {link.label}
                 </a>
               </li>
             ))}

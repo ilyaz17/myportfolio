@@ -38,23 +38,23 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="resume-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 backdrop-blur-md sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#040812]/85 p-3 backdrop-blur-md sm:p-6"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose();
         }
       }}
     >
-      <div className="surface-card flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-6">
+      <div className="devis-card flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#232935] px-5 py-4 sm:px-6">
           <div>
             <h2
               id="resume-modal-title"
-              className="font-display text-xl font-semibold text-[#F4F5F7]"
+              className="font-display text-xl font-semibold text-[#FDFEFF]"
             >
               {PROFILE.name} — Resume
             </h2>
-            <p className="mt-0.5 text-xs text-[#9BA3B2]">
+            <p className="mt-0.5 text-xs text-[#A9ADB8]">
               {PROFILE.role} · {PROFILE.location}
             </p>
           </div>
@@ -63,16 +63,16 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             <div
               role="group"
               aria-label="Resume view mode"
-              className="inline-flex rounded-lg border border-white/10 bg-[#08090B] p-1"
+              className="inline-flex rounded-full border border-[#232935] bg-[#070D1B] p-1"
             >
               <button
                 type="button"
                 aria-pressed={viewMode === 'summary'}
                 onClick={() => setViewMode('summary')}
-                className={`min-h-[36px] rounded-md px-3 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
                   viewMode === 'summary'
-                    ? 'bg-[#F2B705] text-[#08090B]'
-                    : 'text-[#A8B0BD] hover:text-[#F4F5F7]'
+                    ? 'bg-[#FEC544] text-[#070D1B]'
+                    : 'text-[#A9ADB8] hover:text-[#FDFEFF]'
                 }`}
               >
                 Structured Summary
@@ -81,10 +81,10 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 type="button"
                 aria-pressed={viewMode === 'pdf'}
                 onClick={() => setViewMode('pdf')}
-                className={`min-h-[36px] rounded-md px-3 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
                   viewMode === 'pdf'
-                    ? 'bg-[#F2B705] text-[#08090B]'
-                    : 'text-[#A8B0BD] hover:text-[#F4F5F7]'
+                    ? 'bg-[#FEC544] text-[#070D1B]'
+                    : 'text-[#A9ADB8] hover:text-[#FDFEFF]'
                 }`}
               >
                 Original PDF
@@ -94,7 +94,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             <a
               href={RESUME_PDF_URL}
               download={RESUME_DOWNLOAD_FILENAME}
-              className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg bg-[#F2B705] px-4 py-2 text-xs font-semibold text-[#08090B] transition-colors hover:bg-[#FFD043] whitespace-nowrap"
+              className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#FEC544] px-4 py-2 text-xs font-semibold text-[#070D1B] transition-colors hover:bg-[#FFD369] whitespace-nowrap"
             >
               <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
               <span>Download PDF</span>
@@ -105,7 +105,7 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open resume PDF in new tab"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F4F5F7]"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#232935] bg-[#070D1B] text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
             >
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -114,34 +114,35 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               type="button"
               onClick={onClose}
               aria-label="Close resume viewer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F4F5F7] cursor-pointer"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#232935] bg-[#070D1B] text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544] cursor-pointer"
             >
               <X className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto bg-[#08090B]">
+        <div className="min-h-0 flex-1 overflow-y-auto bg-[#070D1B]">
           {viewMode === 'pdf' ? (
             <div className="flex h-full flex-col">
               <object
                 data={`${RESUME_PDF_URL}#view=FitH`}
                 type="application/pdf"
                 aria-label="Mohammed Ilyas Resume PDF"
-                className="h-full min-h-[520px] w-full flex-1 bg-[#0B0D11]"
+                className="h-full min-h-[520px] w-full flex-1 bg-[#0A101E]"
               >
                 <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-                  <p className="font-display text-lg font-semibold text-[#F4F5F7]">
+                  <p className="font-display text-lg font-semibold text-[#FDFEFF]">
                     Inline PDF preview is unavailable in this browser.
                   </p>
-                  <p className="max-w-md text-sm text-[#9BA3B2]">
-                    Download the original PDF directly or switch back to the dark-mode structured view.
+                  <p className="max-w-md text-sm text-[#A9ADB8]">
+                    Download the original PDF directly or switch back to the dark-mode structured
+                    view.
                   </p>
                   <div className="flex flex-wrap items-center justify-center gap-3">
                     <a
                       href={RESUME_PDF_URL}
                       download={RESUME_DOWNLOAD_FILENAME}
-                      className="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-[#F2B705] px-4 py-2 text-sm font-semibold text-[#08090B]"
+                      className="inline-flex min-h-[42px] items-center gap-2 rounded-full bg-[#FEC544] px-5 py-2 text-sm font-semibold text-[#070D1B]"
                     >
                       <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
                       <span>Download Original PDF</span>
@@ -149,19 +150,19 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                     <button
                       type="button"
                       onClick={() => setViewMode('summary')}
-                      className="min-h-[40px] rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-[#F4F5F7] cursor-pointer"
+                      className="min-h-[42px] rounded-full border border-[#232935] px-5 py-2 text-sm font-medium text-[#FDFEFF] cursor-pointer"
                     >
                       Back to text view
                     </button>
                   </div>
                 </div>
               </object>
-              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 bg-[#111317] px-5 py-3 text-xs text-[#9BA3B2]">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#232935] bg-[#101624] px-5 py-3 text-xs text-[#A9ADB8]">
                 <span>Attached PDF file: {RESUME_DOWNLOAD_FILENAME}</span>
                 <button
                   type="button"
                   onClick={() => setViewMode('summary')}
-                  className="font-medium text-[#F2B705] hover:text-[#FFD043] cursor-pointer"
+                  className="font-medium text-[#FEC544] hover:text-[#FFD369] cursor-pointer"
                 >
                   Switch to dark text view
                 </button>
@@ -169,39 +170,39 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
           ) : (
             <div className="mx-auto max-w-3xl space-y-8 p-6 sm:p-8">
-              <header className="border-b border-white/10 pb-6">
-                <h3 className="font-display text-2xl font-semibold text-[#F4F5F7]">
+              <header className="border-b border-[#232935] pb-6">
+                <h3 className="font-display text-2xl font-semibold text-[#FDFEFF]">
                   {PROFILE.name}
                 </h3>
-                <p className="mt-1 text-sm font-medium text-[#F2B705]">{PROFILE.role}</p>
-                <p className="mt-2 text-xs text-[#A8B0BD]">
+                <p className="mt-1 text-sm font-medium text-[#FEC544]">{PROFILE.role}</p>
+                <p className="mt-2 text-xs text-[#A9ADB8]">
                   {PROFILE.phone} · {PROFILE.email} · {PROFILE.githubHandle} · {PROFILE.location}
                 </p>
               </header>
 
               <section>
-                <h4 className="font-display text-base font-semibold text-[#F4F5F7]">
+                <h4 className="font-display text-base font-semibold text-[#FDFEFF]">
                   Professional Summary
                 </h4>
-                <p className="mt-2 text-sm leading-relaxed text-[#B4BAC5]">{PROFILE.summary}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#A9ADB8]">{PROFILE.summary}</p>
               </section>
 
               <section>
-                <h4 className="font-display text-base font-semibold text-[#F4F5F7]">Experience</h4>
+                <h4 className="font-display text-base font-semibold text-[#FDFEFF]">Experience</h4>
                 {EXPERIENCE.map((exp) => (
                   <div key={exp.company} className="mt-3">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <p className="text-sm font-semibold text-[#F4F5F7]">
+                      <p className="text-sm font-semibold text-[#FDFEFF]">
                         {exp.role} — {exp.company}, {exp.location}
                       </p>
-                      <span className="font-mono text-xs text-[#9BA3B2] tabular-nums">
+                      <span className="font-mono text-xs text-[#FEC544] tabular-nums">
                         {exp.period}
                       </span>
                     </div>
-                    <ul className="mt-2.5 space-y-2 text-sm text-[#B4BAC5]">
+                    <ul className="mt-2.5 space-y-2 text-sm text-[#A9ADB8]">
                       {exp.highlights.map((bullet) => (
                         <li key={bullet} className="flex gap-2.5">
-                          <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 bg-[#F2B705]" />
+                          <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FEC544]" />
                           <span>{bullet}</span>
                         </li>
                       ))}
@@ -211,14 +212,14 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               </section>
 
               <section>
-                <h4 className="font-display text-base font-semibold text-[#F4F5F7]">
+                <h4 className="font-display text-base font-semibold text-[#FDFEFF]">
                   Key Projects
                 </h4>
-                <ul className="mt-3 space-y-3 text-sm text-[#B4BAC5]">
+                <ul className="mt-3 space-y-3 text-sm text-[#A9ADB8]">
                   {PROJECTS.map((project) => (
                     <li key={project.id}>
-                      <span className="font-semibold text-[#F4F5F7]">{project.title}</span>{' '}
-                      <span className="text-xs text-[#9BA3B2]">({project.stack.join(', ')})</span> —{' '}
+                      <span className="font-semibold text-[#FDFEFF]">{project.title}</span>{' '}
+                      <span className="text-xs text-[#FEC544]">({project.stack.join(', ')})</span> —{' '}
                       {project.summary}
                     </li>
                   ))}
@@ -226,34 +227,34 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               </section>
 
               <section>
-                <h4 className="font-display text-base font-semibold text-[#F4F5F7]">
+                <h4 className="font-display text-base font-semibold text-[#FDFEFF]">
                   Technical Skills
                 </h4>
                 <dl className="mt-3 space-y-2 text-sm">
                   {SKILL_GROUPS.map((group) => (
                     <div key={group.id}>
-                      <dt className="inline font-semibold text-[#F4F5F7]">{group.category}: </dt>
-                      <dd className="inline text-[#B4BAC5]">{group.skills.join(', ')}</dd>
+                      <dt className="inline font-semibold text-[#FDFEFF]">{group.category}: </dt>
+                      <dd className="inline text-[#A9ADB8]">{group.skills.join(', ')}</dd>
                     </div>
                   ))}
                 </dl>
               </section>
 
-              <section className="grid grid-cols-1 gap-6 border-t border-white/10 pt-6 sm:grid-cols-2">
+              <section className="grid grid-cols-1 gap-6 border-t border-[#232935] pt-6 sm:grid-cols-2">
                 <div>
-                  <h4 className="font-display text-base font-semibold text-[#F4F5F7]">Education</h4>
-                  <ul className="mt-2 space-y-1.5 text-sm text-[#B4BAC5]">
+                  <h4 className="font-display text-base font-semibold text-[#FDFEFF]">Education</h4>
+                  <ul className="mt-2 space-y-1.5 text-sm text-[#A9ADB8]">
                     {EDUCATION.map((edu) => (
                       <li key={edu.degree}>
-                        <span className="font-medium text-[#F4F5F7]">{edu.degree}</span> —{' '}
+                        <span className="font-medium text-[#FDFEFF]">{edu.degree}</span> —{' '}
                         {edu.institution} ({edu.period})
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-display text-base font-semibold text-[#F4F5F7]">Languages</h4>
-                  <p className="mt-2 text-sm text-[#B4BAC5]">{PROFILE.languages.join(', ')}</p>
+                  <h4 className="font-display text-base font-semibold text-[#FDFEFF]">Languages</h4>
+                  <p className="mt-2 text-sm text-[#A9ADB8]">{PROFILE.languages.join(', ')}</p>
                 </div>
               </section>
             </div>

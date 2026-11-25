@@ -8,11 +8,11 @@
 
 @layer base {
   html {
-    background-color: #08090b;
-    color: #f4f5f7;
+    background-color: #0a101e;
+    color: #a9adb8;
     font-family: var(--font-sans);
     letter-spacing: 0.01em;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 5rem;
   }
 
   h1,
@@ -24,7 +24,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #f2b705;
+    outline: 2px solid #fec544;
     outline-offset: 2px;
   }
 }
@@ -33,61 +33,33 @@
   font-variant-numeric: tabular-nums;
 }
 
-.arch-grid-backdrop {
+.devis-hero-stars {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 65% at 50% 0%, #000 35%, transparent 100%);
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.28) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 28% 62%, rgba(255, 255, 255, 0.2) 50%, transparent 100%),
+    radial-gradient(1px 1px at 42% 26%, rgba(254, 197, 68, 0.25) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 66% 42%, rgba(255, 255, 255, 0.22) 50%, transparent 100%),
+    radial-gradient(1px 1px at 84% 74%, rgba(255, 255, 255, 0.18) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 22% 84%, rgba(254, 197, 68, 0.18) 50%, transparent 100%);
+  background-size: 320px 320px;
 }
 
-.surface-card {
-  position: relative;
-  background: linear-gradient(180deg, rgba(22, 25, 32, 0.92) 0%, rgba(15, 17, 22, 0.96) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 20px 44px -28px rgba(0, 0, 0, 0.85);
-}
-
-.surface-card-interactive {
+.devis-card {
+  background-color: #101624;
+  border: 1px solid #232935;
   transition:
     border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.surface-card-interactive:hover {
-  border-color: rgba(242, 183, 5, 0.32);
+.devis-card-hover:hover {
+  border-color: rgba(254, 197, 68, 0.45);
   transform: translateY(-2px);
-}
-
-@keyframes marquee-scroll {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee-scroll 38s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .marquee-track {
-    animation: none;
   }
 
   *,

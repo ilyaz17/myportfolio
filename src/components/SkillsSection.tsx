@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { SKILL_GROUPS } from '../data/portfolioData';
 import { countMatchedSkills, filterSkillGroups } from '../utils/portfolioLogic';
+import { SectionHeading } from './SectionHeading';
 
 const QUICK_FILTERS = ['Laravel', 'React', 'MySQL', 'AWS', 'MCP'];
 
@@ -15,6 +16,8 @@ const BENTO_SPAN_BY_ID: Record<string, string> = {
   tools: 'md:col-span-3 lg:col-span-3',
 };
 
+const MAX_DOMAIN_SKILLS = Math.max(...SKILL_GROUPS.map((group) => group.skills.length));
+
 export function SkillsSection() {
   const [query, setQuery] = useState('');
 
@@ -27,74 +30,112 @@ export function SkillsSection() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="border-t border-white/10"
+      className="scroll-mt-18 bg-[#070D1B] py-20 sm:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-22">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="font-mono text-xs font-medium text-[#F2B705]">03. Technical Skills</p>
-            <h2
-              id="skills-heading"
-              className="mt-2 font-display text-3xl font-semibold tracking-tight text-[#F7F8FA] sm:text-4xl"
-            >
-              Stack &amp; Tooling Matrix
-            </h2>
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeading id="skills-heading" title="SKILLS" />
+
+        {/* Devis 2-column intro + signature horizontal gold capability bars */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start lg:gap-12">
+          <div className="lg:col-span-5">
+            <h3 className="font-display text-3xl font-semibold leading-tight text-[#FDFEFF] sm:text-[34px]">
+              All the stack &amp; tooling I work with in production.
+            </h3>
+            <p className="mt-4 text-[15px] leading-[1.75] text-[#A9ADB8]">
+              Over 5+ years of shipping web platforms across Laravel/PHP, MERN, relational
+              databases, AWS cloud storage, and modern AI-assisted development workflows. Search any
+              skill below to inspect exact coverage.
+            </p>
+
+            <div className="mt-7">
+              <label htmlFor="skill-search-input" className="sr-only">
+                Search technical skills
+              </label>
+              <div className="relative">
+                <Search
+                  className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-[#8E95A5]"
+                  aria-hidden="true"
+                />
+                <input
+                  id="skill-search-input"
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Filter skills (e.g. Laravel, AWS, MCP)"
+                  className="min-h-[46px] w-full rounded-lg border border-[#232935] bg-[#101624] py-2.5 pr-10 pl-11 text-sm text-[#FDFEFF] placeholder:text-[#7A8294] transition-colors focus:border-[#FEC544] focus:outline-none"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label="Clear skill search"
+                    className="absolute top-1/2 right-2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-[#A9ADB8] transition-colors hover:text-[#FDFEFF] cursor-pointer"
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-[#8E95A5]">
+                <span>Quick filter:</span>
+                {QUICK_FILTERS.map((term) => {
+                  const active = query.trim().toLowerCase() === term.toLowerCase();
+                  return (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setQuery(active ? '' : term)}
+                      aria-pressed={active}
+                      className={`rounded px-2 py-0.5 font-mono transition-colors cursor-pointer ${
+                        active
+                          ? 'bg-[#FEC544] font-semibold text-[#070D1B]'
+                          : 'text-[#C5CAD4] hover:text-[#FEC544]'
+                      }`}
+                    >
+                      {term}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
-          <div className="w-full lg:w-96">
-            <label htmlFor="skill-search-input" className="sr-only">
-              Search technical skills
-            </label>
-            <div className="relative">
-              <Search
-                className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#8D96A6]"
-                aria-hidden="true"
-              />
-              <input
-                id="skill-search-input"
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Filter skills (e.g. Laravel, AWS, MCP)"
-                className="min-h-[44px] w-full rounded-xl border border-white/14 bg-[#111319] py-2.5 pr-10 pl-10 text-sm text-[#F7F8FA] placeholder:text-[#7E8796] transition-colors focus:border-[#F2B705] focus:outline-none"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery('')}
-                  aria-label="Clear skill search"
-                  className="absolute top-1/2 right-2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-[#9BA3B2] transition-colors hover:text-[#F7F8FA] cursor-pointer"
+          {/* Right column — Devis thin horizontal gold bars using real tool counts (no fabricated %) */}
+          <div className="space-y-5 lg:col-span-7">
+            {SKILL_GROUPS.map((group) => {
+              const widthPercent = Math.round((group.skills.length / MAX_DOMAIN_SKILLS) * 100);
+              const isMatched = filteredGroups.some((item) => item.id === group.id);
+              return (
+                <div
+                  key={group.id}
+                  className={`transition-opacity duration-150 ${
+                    isUnfiltered || isMatched ? 'opacity-100' : 'opacity-35'
+                  }`}
                 >
-                  <X className="h-4 w-4" aria-hidden="true" />
-                </button>
-              )}
-            </div>
-
-            <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#8D96A6]">
-              <span>Quick filter:</span>
-              {QUICK_FILTERS.map((term) => {
-                const active = query.trim().toLowerCase() === term.toLowerCase();
-                return (
-                  <button
-                    key={term}
-                    type="button"
-                    onClick={() => setQuery(active ? '' : term)}
-                    aria-pressed={active}
-                    className={`rounded px-1.5 py-0.5 font-mono transition-colors cursor-pointer ${
-                      active
-                        ? 'bg-[#F2B705] font-semibold text-[#08090B]'
-                        : 'text-[#B4BAC5] hover:text-[#F2B705]'
-                    }`}
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="font-display text-base font-semibold text-[#FDFEFF]">
+                      {group.category}
+                    </span>
+                    <span className="font-mono text-xs font-medium text-[#FEC544] tabular-nums whitespace-nowrap shrink-0">
+                      {group.skills.length} {group.skills.length === 1 ? 'skill' : 'skills'}
+                    </span>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    className="mt-2.5 h-[2px] w-full overflow-hidden bg-[#232935]"
                   >
-                    {term}
-                  </button>
-                );
-              })}
-            </div>
+                    <div
+                      className="h-full bg-[#FEC544] transition-all duration-300"
+                      style={{ width: `${widthPercent}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-[#949DAA] tabular-nums" data-testid="skill-count">
+        <p className="mt-10 text-xs text-[#8E95A5] tabular-nums" data-testid="skill-count">
           Showing {matchedSkills} of {totalSkills} technical skills across {filteredGroups.length}{' '}
           {filteredGroups.length === 1 ? 'domain' : 'domains'}
         </p>
@@ -102,25 +143,25 @@ export function SkillsSection() {
         {filteredGroups.length === 0 ? (
           <div
             role="status"
-            className="surface-card mt-8 rounded-2xl p-10 text-center"
+            className="devis-card mt-6 rounded-xl p-10 text-center"
           >
-            <p className="font-display text-lg font-semibold text-[#F7F8FA]">
+            <p className="font-display text-lg font-semibold text-[#FDFEFF]">
               No matching skills found for “{query}”
             </p>
-            <p className="mt-2 text-sm text-[#9BA3B2]">
+            <p className="mt-2 text-sm text-[#A9ADB8]">
               Try searching for Laravel, React, MySQL, AWS, Payment Gateway, or Claude Code.
             </p>
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="mt-5 inline-flex min-h-[40px] items-center rounded-lg bg-[#F2B705] px-4 py-2 text-sm font-semibold text-[#08090B] transition-colors hover:bg-[#FFD043] cursor-pointer"
+              className="mt-5 inline-flex min-h-[42px] items-center rounded-full bg-[#FEC544] px-6 py-2 text-sm font-semibold text-[#070D1B] transition-colors hover:bg-[#FFD369] cursor-pointer"
             >
               Clear search
             </button>
           </div>
         ) : (
           <div
-            className={`mt-8 grid grid-cols-1 gap-5 ${
+            className={`mt-6 grid grid-cols-1 gap-5 ${
               isUnfiltered
                 ? 'md:grid-cols-6'
                 : filteredGroups.length === 1
@@ -132,36 +173,36 @@ export function SkillsSection() {
               <section
                 key={group.id}
                 aria-label={`${group.category} skills`}
-                className={`surface-card flex flex-col justify-between rounded-2xl p-6 transition-colors duration-150 hover:border-white/20 ${
+                className={`devis-card devis-card-hover flex flex-col justify-between rounded-xl p-6 ${
                   isUnfiltered ? BENTO_SPAN_BY_ID[group.id] ?? 'md:col-span-3' : ''
                 }`}
               >
                 <div>
-                  <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-3.5">
+                  <div className="flex items-baseline justify-between gap-4 border-b border-[#232935] pb-3.5">
                     <div className="flex items-baseline gap-2.5">
-                      <span className="font-mono text-xs text-[#F2B705] tabular-nums">
+                      <span className="font-mono text-xs text-[#FEC544] tabular-nums">
                         0{idx + 1}
                       </span>
-                      <h3 className="font-display text-lg font-semibold text-[#F7F8FA]">
+                      <h4 className="font-display text-lg font-semibold text-[#FDFEFF]">
                         {group.category}
-                      </h3>
+                      </h4>
                     </div>
-                    <span className="font-mono text-xs text-[#949DAA] tabular-nums whitespace-nowrap shrink-0">
+                    <span className="font-mono text-xs text-[#8E95A5] tabular-nums whitespace-nowrap shrink-0">
                       {group.skills.length} {group.skills.length === 1 ? 'item' : 'items'}
                     </span>
                   </div>
 
-                  <p className="mt-3 text-xs leading-relaxed text-[#949DAA]">
+                  <p className="mt-3 text-xs leading-relaxed text-[#A9ADB8]">
                     {group.description}
                   </p>
                 </div>
 
-                <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-sm font-medium text-[#E8ECF2]">
+                <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-sm font-medium text-[#FDFEFF]">
                   {group.skills.map((skill, skillIdx) => (
                     <li key={skill} className="inline-flex items-center gap-3">
                       <span>{skill}</span>
                       {skillIdx < group.skills.length - 1 && (
-                        <span aria-hidden="true" className="text-[#F2B705]/45">
+                        <span aria-hidden="true" className="text-[#FEC544]/55">
                           ·
                         </span>
                       )}
