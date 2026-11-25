@@ -1,18 +1,12 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowDownToLine, Check, Copy, Github, Mail, MapPin, Phone } from 'lucide-react';
-import { motion } from 'motion/react';
-import {
-  PROFILE,
-  RESUME_DOWNLOAD_FILENAME,
-  RESUME_PDF_URL,
-} from '../data/portfolioData';
+import { Check, Copy, ExternalLink, Mail, Phone, Send } from 'lucide-react';
+import { PROFILE } from '../data/portfolioData';
 import {
   buildMailtoHref,
   validateContactForm,
   type ContactFormErrors,
   type ContactFormInput,
 } from '../utils/portfolioLogic';
-import { SectionHeading } from './SectionHeading';
 
 const INITIAL_FORM: ContactFormInput = {
   name: '',
@@ -21,377 +15,249 @@ const INITIAL_FORM: ContactFormInput = {
   message: '',
 };
 
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-
 export function ContactSection() {
   const [form, setForm] = useState<ContactFormInput>(INITIAL_FORM);
   const [errors, setErrors] = useState<ContactFormErrors>({});
-  const [submittedInquiry, setSubmittedInquiry] = useState<ContactFormInput | null>(null);
-  const [copiedField, setCopiedField] = useState<'email' | 'phone' | null>(null);
+  const [submittedHref, setSubmittedHref] = useState<string | null>(null);
+  const [submittedName, setSubmittedName] = useState<string>('');
+  const [copiedKey, setCopiedKey] = useState<'email' | 'phone' | null>(null);
 
-  const handleCopy = async (field: 'email' | 'phone', value: string) => {
+  const handleCopy = async (value: string, key: 'email' | 'phone') => {
     try {
       await navigator.clipboard.writeText(value);
-      setCopiedField(field);
+      setCopiedKey(key);
       window.setTimeout(() => {
-        setCopiedField((current) => (current === field ? null : current));
+        setCopiedKey((current) => (current === key ? null : current));
       }, 2200);
     } catch {
-      setCopiedField(field);
+      setCopiedKey(null);
     }
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const validation = validateContactForm(form);
-    if (!validation.isValid) {
-      setErrors(validation.errors);
+    const result = validateContactForm(form);
+    if (!result.isValid) {
+      setErrors(result.errors);
+      setSubmittedHref(null);
       return;
     }
 
+    const href = buildMailtoHref(PROFILE.email, form);
     setErrors({});
-    setSubmittedInquiry({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      subject: form.subject.trim() || 'Project or Role Inquiry',
-      message: form.message.trim(),
-    });
+    setSubmittedName(form.name.trim());
+    setSubmittedHref(href);
+  };
+
+  const handleReset = () => {
     setForm(INITIAL_FORM);
+    setErrors({});
+    setSubmittedHref(null);
+    setSubmittedName('');
   };
 
   return (
-    <section
-      id="contact"
-      aria-labelledby="contact-heading"
-      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24 overflow-x-clip"
-    >
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading id="contact-heading" title="CONTACT" />
+    <section id="contact" className="scroll-mt-10 py-14 sm:py-16">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#111315] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/10 dark:bg-[#14171D] dark:text-[#F3F5F7]">
+        <Send className="h-3.5 w-3.5 text-[#00B853] dark:text-[#00E061]" aria-hidden="true" />
+        <span>Contact</span>
+      </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
-          {/* Left column — Devis "Just say Hello" form */}
-          <motion.div
-            initial={{ opacity: 0, x: -22 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 'some' }}
-            transition={{ duration: 0.52, ease: EASE_OUT }}
-            className="lg:col-span-6"
-          >
-            <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
-              Just say Hello
-            </h3>
+      <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.18] tracking-[-0.02em] text-[#111315] dark:text-white sm:text-4xl">
+        If you have a role or project enquiry, drop an email or fill the form — available now.
+      </h2>
 
-            {submittedInquiry ? (
-              <div
-                role="status"
-                className="devis-card mt-6 space-y-6 rounded-xl p-6 sm:p-8"
-              >
-                <div>
-                  <p className="font-mono text-xs font-medium text-[#FEC544]">Inquiry Ready</p>
-                  <h4 className="mt-2 font-display text-2xl font-semibold text-[#FDFEFF]">
-                    Thank you, {submittedInquiry.name}.
-                  </h4>
-                  <p className="mt-2 text-sm leading-relaxed text-[#A9ADB8]">
-                    Your inquiry has been prepared for{' '}
-                    <span className="font-medium text-[#FDFEFF]">{PROFILE.email}</span>. Open your
-                    email client below to deliver it directly, or compose a new note.
-                  </p>
-                </div>
-
-                <div className="space-y-3 border-y border-[#232935] py-5 text-sm">
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <span className="text-[#8E95A5]">From</span>
-                    <span className="text-[#FDFEFF]">
-                      {submittedInquiry.name} · {submittedInquiry.email}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <span className="text-[#8E95A5]">Subject</span>
-                    <span className="text-[#FDFEFF]">{submittedInquiry.subject}</span>
-                  </div>
-                  <div className="pt-2">
-                    <span className="block text-xs text-[#8E95A5]">Message</span>
-                    <p className="mt-1.5 leading-relaxed text-[#D6DAE2]">
-                      {submittedInquiry.message}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4">
-                  <a
-                    href={buildMailtoHref(PROFILE.email, submittedInquiry)}
-                    className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#FEC544] px-7 py-2.5 text-sm font-semibold text-[#070D1B] transition-colors hover:bg-[#FFD369] whitespace-nowrap"
-                  >
-                    <Mail className="h-4 w-4" aria-hidden="true" />
-                    <span>Open in Email Client</span>
-                  </a>
-
-                  <button
-                    type="button"
-                    onClick={() => setSubmittedInquiry(null)}
-                    className="min-h-[46px] rounded-full border border-[#232935] px-5 py-2.5 text-sm font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544]/50 hover:text-[#FDFEFF] cursor-pointer"
-                  >
-                    Send Another Message
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-5">
-                <div>
-                  <label htmlFor="contact-name" className="sr-only">
-                    Your Name
-                  </label>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(event) => {
-                      setForm((prev) => ({ ...prev, name: event.target.value }));
-                      if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
-                    }}
-                    aria-invalid={Boolean(errors.name)}
-                    aria-describedby={errors.name ? 'contact-name-error' : undefined}
-                    placeholder="Your Name"
-                    className="min-h-[52px] w-full rounded-lg border border-[#232935] bg-[#101624] px-4 py-3 text-sm text-[#FDFEFF] placeholder:text-[#7A8294] transition-colors focus:border-[#FEC544] focus:outline-none"
-                  />
-                  {errors.name && (
-                    <p id="contact-name-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
-                      {errors.name}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="contact-email" className="sr-only">
-                    Email Address
-                  </label>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(event) => {
-                      setForm((prev) => ({ ...prev, email: event.target.value }));
-                      if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
-                    }}
-                    aria-invalid={Boolean(errors.email)}
-                    aria-describedby={errors.email ? 'contact-email-error' : undefined}
-                    placeholder="Your Email"
-                    className="min-h-[52px] w-full rounded-lg border border-[#232935] bg-[#101624] px-4 py-3 text-sm text-[#FDFEFF] placeholder:text-[#7A8294] transition-colors focus:border-[#FEC544] focus:outline-none"
-                  />
-                  {errors.email && (
-                    <p id="contact-email-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="contact-subject" className="sr-only">
-                    Subject (Optional)
-                  </label>
-                  <input
-                    id="contact-subject"
-                    name="subject"
-                    type="text"
-                    value={form.subject}
-                    onChange={(event) =>
-                      setForm((prev) => ({ ...prev, subject: event.target.value }))
-                    }
-                    placeholder="Your Subject"
-                    className="min-h-[52px] w-full rounded-lg border border-[#232935] bg-[#101624] px-4 py-3 text-sm text-[#FDFEFF] placeholder:text-[#7A8294] transition-colors focus:border-[#FEC544] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contact-message" className="sr-only">
-                    Message
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    rows={5}
-                    required
-                    value={form.message}
-                    onChange={(event) => {
-                      setForm((prev) => ({ ...prev, message: event.target.value }));
-                      if (errors.message) setErrors((prev) => ({ ...prev, message: undefined }));
-                    }}
-                    aria-invalid={Boolean(errors.message)}
-                    aria-describedby={errors.message ? 'contact-message-error' : undefined}
-                    placeholder="Your Message"
-                    className="w-full rounded-lg border border-[#232935] bg-[#101624] px-4 py-3.5 text-sm text-[#FDFEFF] placeholder:text-[#7A8294] transition-colors focus:border-[#FEC544] focus:outline-none"
-                  />
-                  {errors.message && (
-                    <p id="contact-message-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
-                      {errors.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="pt-1">
-                  <button
-                    type="submit"
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[#FEC544] px-9 py-3 text-sm font-semibold text-[#070D1B] transition-colors duration-150 hover:bg-[#FFD369] whitespace-nowrap cursor-pointer"
-                  >
-                    Send Message
-                  </button>
-                </div>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Right column — Devis "Contact Info" with circular outlined icon rows */}
-          <motion.div
-            initial={{ opacity: 0, x: 22 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 'some' }}
-            transition={{ duration: 0.52, delay: 0.08, ease: EASE_OUT }}
-            className="lg:col-span-6"
-          >
-            <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
-              Contact Info
-            </h3>
-            <p className="mt-4 text-[15px] leading-[1.75] text-[#A9ADB8]">
-              Available for senior Full-Stack roles, Laravel &amp; MERN product engineering,
-              enterprise ERPs, and payment gateway integrations. Reach out directly below.
-            </p>
-
-            <div className="mt-8 space-y-6">
-              {/* Email row */}
-              <div className="group flex items-start justify-between gap-4">
-                <div className="flex items-start gap-4 min-w-0">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#A9ADB8] transition-colors group-hover:border-[#FEC544] group-hover:text-[#FEC544]">
-                    <Mail className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="font-display text-lg font-medium text-[#FDFEFF]">Email</h4>
-                    <a
-                      href={PROFILE.emailHref}
-                      className="mt-0.5 block truncate text-sm text-[#A9ADB8] transition-colors hover:text-[#FEC544]"
-                    >
-                      {PROFILE.email}
-                    </a>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleCopy('email', PROFILE.email)}
-                  aria-label="Copy email address"
-                  className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-[#232935] bg-[#101624] px-3.5 py-1.5 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544]/60 hover:text-[#FEC544] whitespace-nowrap shrink-0 cursor-pointer"
-                >
-                  {copiedField === 'email' ? (
-                    <>
-                      <Check className="h-3.5 w-3.5 text-[#FEC544]" aria-hidden="true" />
-                      <span>Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Phone row */}
-              <div className="group flex items-start justify-between gap-4">
-                <div className="flex items-start gap-4 min-w-0">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#A9ADB8] transition-colors group-hover:border-[#FEC544] group-hover:text-[#FEC544]">
-                    <Phone className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="font-display text-lg font-medium text-[#FDFEFF]">Phone</h4>
-                    <a
-                      href={PROFILE.phoneHref}
-                      className="mt-0.5 block font-mono text-sm text-[#A9ADB8] tabular-nums transition-colors hover:text-[#FEC544]"
-                    >
-                      {PROFILE.phone}
-                    </a>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleCopy('phone', PROFILE.phone)}
-                  aria-label="Copy phone number"
-                  className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-[#232935] bg-[#101624] px-3.5 py-1.5 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544]/60 hover:text-[#FEC544] whitespace-nowrap shrink-0 cursor-pointer"
-                >
-                  {copiedField === 'phone' ? (
-                    <>
-                      <Check className="h-3.5 w-3.5 text-[#FEC544]" aria-hidden="true" />
-                      <span>Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Address row */}
-              <div className="group flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#A9ADB8] transition-colors group-hover:border-[#FEC544] group-hover:text-[#FEC544]">
-                  <MapPin className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <div>
-                  <h4 className="font-display text-lg font-medium text-[#FDFEFF]">Address</h4>
-                  <p className="mt-0.5 text-sm text-[#A9ADB8]">
-                    Coimbatore &amp; Pollachi, Tamil Nadu, India
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Devis social connect strip */}
-            <div className="mt-10 border-t border-[#232935] pt-7">
-              <p className="text-base font-medium text-[#D6DAE2]">
-                Visit my social profile and get connected
-              </p>
-
-              <div className="mt-5 flex flex-wrap items-center gap-3.5">
-                <a
-                  href={PROFILE.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-[#232935] bg-[#101624] px-4 py-2 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-                >
-                  <Github className="h-4 w-4" aria-hidden="true" />
-                  <span>GitHub</span>
-                </a>
-
-                <a
-                  href={PROFILE.emailHref}
-                  className="inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-[#232935] bg-[#101624] px-4 py-2 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-                >
-                  <Mail className="h-4 w-4" aria-hidden="true" />
-                  <span>Email</span>
-                </a>
-
-                <a
-                  href={PROFILE.phoneHref}
-                  className="inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-[#232935] bg-[#101624] px-4 py-2 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-                >
-                  <Phone className="h-4 w-4" aria-hidden="true" />
-                  <span>Call</span>
-                </a>
-
-                <a
-                  href={RESUME_PDF_URL}
-                  download={RESUME_DOWNLOAD_FILENAME}
-                  className="inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-[#232935] bg-[#101624] px-4 py-2 text-xs font-medium text-[#FEC544] transition-colors hover:border-[#FEC544] hover:bg-[#FEC544] hover:text-[#070D1B]"
-                >
-                  <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
-                  <span>Download CV</span>
-                </a>
-              </div>
-            </div>
-          </motion.div>
+      {submittedHref ? (
+        <div
+          role="status"
+          aria-live="polite"
+          data-testid="contact-confirmation"
+          className="mt-8 rounded-3xl border border-[#00C853]/35 bg-[#F4FBF7] p-6 dark:bg-[#0F1B15] sm:p-8"
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#00E061] text-[#0B0D10]">
+            <Check className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <h3 className="mt-4 font-display text-xl font-semibold text-[#111315] dark:text-white">
+            Message ready, {submittedName}.
+          </h3>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed text-[#4B515C] dark:text-[#B4BAC6]">
+            Your note has been validated and prepared for{' '}
+            <span className="font-semibold text-[#111315] dark:text-white">{PROFILE.email}</span>.
+            Launch your mail client below or copy the address directly.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href={submittedHref}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#00E061] px-5 py-2.5 text-sm font-semibold text-[#0B0D10] transition-colors hover:bg-[#19F073]"
+            >
+              <span>Open Email Draft</span>
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="min-h-[44px] rounded-full border border-black/15 px-5 py-2.5 text-sm font-medium text-[#111315] transition-colors hover:border-black/40 dark:border-white/15 dark:text-[#F3F5F7] cursor-pointer"
+            >
+              Send another message
+            </button>
+          </div>
         </div>
+      ) : (
+        <form onSubmit={handleSubmit} noValidate className="mt-9 space-y-6">
+          <div>
+            <label
+              htmlFor="contact-name"
+              className="block text-xs font-medium text-[#646870] dark:text-[#9CA3AF]"
+            >
+              Your Name *
+            </label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              value={form.name}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, name: event.target.value }));
+                if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+              }}
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? 'contact-name-error' : undefined}
+              placeholder="Alex Rivera"
+              className="mt-1 w-full border-b border-black/[0.14] bg-transparent py-3 text-[15px] text-[#111315] placeholder:text-[#9CA3AF] transition-colors focus:border-[#00C853] focus:outline-none dark:border-white/15 dark:text-white dark:placeholder:text-[#5F6674] dark:focus:border-[#00E061]"
+            />
+            {errors.name && (
+              <p id="contact-name-error" className="mt-1.5 text-xs text-[#DC2626] dark:text-[#F87171]">
+                {errors.name}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="contact-email"
+              className="block text-xs font-medium text-[#646870] dark:text-[#9CA3AF]"
+            >
+              Email Address *
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, email: event.target.value }));
+                if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+              }}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? 'contact-email-error' : undefined}
+              placeholder="alex@company.com"
+              className="mt-1 w-full border-b border-black/[0.14] bg-transparent py-3 text-[15px] text-[#111315] placeholder:text-[#9CA3AF] transition-colors focus:border-[#00C853] focus:outline-none dark:border-white/15 dark:text-white dark:placeholder:text-[#5F6674] dark:focus:border-[#00E061]"
+            />
+            {errors.email && (
+              <p id="contact-email-error" className="mt-1.5 text-xs text-[#DC2626] dark:text-[#F87171]">
+                {errors.email}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="contact-subject"
+              className="block text-xs font-medium text-[#646870] dark:text-[#9CA3AF]"
+            >
+              Subject (Optional)
+            </label>
+            <input
+              id="contact-subject"
+              name="subject"
+              type="text"
+              value={form.subject}
+              onChange={(event) => setForm((prev) => ({ ...prev, subject: event.target.value }))}
+              placeholder="Full Stack Role · Laravel / MERN Project"
+              className="mt-1 w-full border-b border-black/[0.14] bg-transparent py-3 text-[15px] text-[#111315] placeholder:text-[#9CA3AF] transition-colors focus:border-[#00C853] focus:outline-none dark:border-white/15 dark:text-white dark:placeholder:text-[#5F6674] dark:focus:border-[#00E061]"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="contact-message"
+              className="block text-xs font-medium text-[#646870] dark:text-[#9CA3AF]"
+            >
+              Project Description *
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows={3}
+              value={form.message}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, message: event.target.value }));
+                if (errors.message) setErrors((prev) => ({ ...prev, message: undefined }));
+              }}
+              aria-invalid={Boolean(errors.message)}
+              aria-describedby={errors.message ? 'contact-message-error' : undefined}
+              placeholder="Share role details, architecture scope, or timeline..."
+              className="mt-1 w-full resize-none border-b border-black/[0.14] bg-transparent py-3 text-[15px] text-[#111315] placeholder:text-[#9CA3AF] transition-colors focus:border-[#00C853] focus:outline-none dark:border-white/15 dark:text-white dark:placeholder:text-[#5F6674] dark:focus:border-[#00E061]"
+            />
+            {errors.message && (
+              <p id="contact-message-error" className="mt-1.5 text-xs text-[#DC2626] dark:text-[#F87171]">
+                {errors.message}
+              </p>
+            )}
+          </div>
+
+          {/* Exact Isak Bottom Action Row: Send Message Pill Left + Direct Email Right */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
+            <button
+              type="submit"
+              className="inline-flex min-h-[46px] items-center justify-center rounded-full border border-black/[0.12] bg-white px-7 py-2.5 text-sm font-semibold text-[#111315] shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all hover:border-[#00C853] hover:bg-[#00E061] hover:text-[#0B0D10] dark:border-white/15 dark:bg-[#14171D] dark:text-white dark:hover:border-[#00E061] dark:hover:bg-[#00E061] dark:hover:text-[#0B0D10] cursor-pointer"
+            >
+              Send Message
+            </button>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={PROFILE.emailHref}
+                className="text-sm font-medium text-[#111315] transition-colors hover:text-[#009944] dark:text-[#F3F5F7] dark:hover:text-[#00E061]"
+              >
+                {PROFILE.email}
+              </a>
+              <button
+                type="button"
+                onClick={() => handleCopy(PROFILE.email, 'email')}
+                aria-label="Copy email address"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.1] text-[#5F6570] transition-colors hover:border-[#00C853] hover:text-[#009944] dark:border-white/15 dark:text-[#9CA3AF] dark:hover:text-[#00E061] cursor-pointer"
+              >
+                {copiedKey === 'email' ? (
+                  <Check className="h-3.5 w-3.5 text-[#00A846]" aria-hidden="true" />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                )}
+              </button>
+            </div>
+          </div>
+        </form>
+      )}
+
+      {/* Direct Contact Quick Line */}
+      <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-black/[0.08] pt-6 text-xs text-[#646870] dark:border-white/[0.08] dark:text-[#9CA3AF]">
+        <a
+          href={PROFILE.phoneHref}
+          className="inline-flex items-center gap-1.5 transition-colors hover:text-[#111315] dark:hover:text-white tabular-nums"
+        >
+          <Phone className="h-3.5 w-3.5 text-[#00A846] dark:text-[#00E061]" aria-hidden="true" />
+          <span>{PROFILE.phone}</span>
+        </a>
+        <a
+          href={PROFILE.emailHref}
+          className="inline-flex items-center gap-1.5 transition-colors hover:text-[#111315] dark:hover:text-white"
+        >
+          <Mail className="h-3.5 w-3.5 text-[#00A846] dark:text-[#00E061]" aria-hidden="true" />
+          <span>{PROFILE.email}</span>
+        </a>
+        <span>{PROFILE.location}</span>
       </div>
     </section>
   );

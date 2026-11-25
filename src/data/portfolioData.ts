@@ -37,94 +37,27 @@ export interface EducationItem {
   period: string;
 }
 
-export interface ArchitectureLayer {
-  id: string;
-  label: string;
-  role: string;
-  technologies: string[];
-  appliedIn: string;
-}
-
 export interface ServiceItem {
   id: string;
   icon: 'laravel' | 'mern' | 'erp' | 'payments' | 'database' | 'ai';
   title: string;
   description: string;
+  tags: string[];
   featured?: boolean;
 }
 
-export interface AiWorkflowPillar {
+export interface CoreHighlight {
   title: string;
-  summary: string;
-  tools: string[];
+  detail: string;
+  tag: string;
 }
 
 export const RESUME_PDF_URL = '/assets/aistudio/Mohammed_Ilyas_Resume__1__c1e233fa.pdf';
 export const RESUME_DOWNLOAD_FILENAME = 'Mohammed_Ilyas_Resume.pdf';
 
-export const SERVICES: ServiceItem[] = [
-  {
-    id: 'laravel-php',
-    icon: 'laravel',
-    title: 'Laravel & PHP Engineering',
-    description:
-      'Production web platforms, CodeIgniter enterprise apps, modular backend logic, and 2FA-protected role-based access control.',
-  },
-  {
-    id: 'mern-stack',
-    icon: 'mern',
-    title: 'MERN & Modern Frontend',
-    description:
-      'Responsive React.js, Next.js, TypeScript, Tailwind, and Shadcn UI applications engineered for speed and Core Web Vitals.',
-  },
-  {
-    id: 'erp-portals',
-    icon: 'erp',
-    title: 'Enterprise ERP & POS Systems',
-    description:
-      'High-volume government portals, coaching center ERPs, and hotel kitchen ordering systems with direct Epson ePOS SDK receipt printing.',
-  },
-  {
-    id: 'payments-apis',
-    icon: 'payments',
-    title: 'REST APIs & Payments',
-    description:
-      'Clean REST API design, e-commerce checkout re-engineering, and secure ICICI payment gateway integrations for reliable transactions.',
-  },
-  {
-    id: 'database-cloud',
-    icon: 'database',
-    title: 'Database & Cloud Architecture',
-    description:
-      'Schema design and query optimization across MySQL, MS SQL Server, PostgreSQL, MongoDB, AWS S3, RDS, and Linux VPS.',
-  },
-  {
-    id: 'ai-dev-workflows',
-    icon: 'ai',
-    title: 'AI-Assisted Dev & Automation',
-    description:
-      'Accelerated production shipping with Claude Code, Codex, OpenCode, Antigravity, reusable Skills, Agents Automation, and MCP plugins.',
-    featured: true,
-  },
-];
-
-export const AI_WORKFLOW_PILLARS: AiWorkflowPillar[] = [
-  {
-    title: 'Agentic Coding & Refactoring',
-    summary:
-      'Using terminal and IDE coding agents to accelerate Laravel/MERN feature scaffolding, debugging, test generation, and clean code reviews.',
-    tools: ['Claude Code', 'Codex', 'OpenCode', 'Antigravity'],
-  },
-  {
-    title: 'Agents Automation, Skills & MCP',
-    summary:
-      'Building repeatable engineering workflows with custom reusable Skills, autonomous agent pipelines, and Model Context Protocol (MCP) plugins.',
-    tools: ['Agents Automation', 'Skills', 'MCP & Plugins'],
-  },
-];
-
 export const PROFILE = {
   name: 'Mohammed Ilyas',
+  shortName: 'Ilyas',
   role: 'Full Stack Developer (Laravel & MERN)',
   location: 'Coimbatore, India',
   phone: '+91 9188310575',
@@ -133,68 +66,96 @@ export const PROFILE = {
   emailHref: 'mailto:mohammedilyassa@gmail.com',
   githubHandle: 'github.com/ilyaz17',
   githubUrl: 'https://github.com/ilyaz17',
-  headline: 'Engineering scalable Laravel & MERN systems end-to-end.',
+  sidebarBio:
+    'I build scalable Laravel & MERN apps and AI-assisted workflows, based in Coimbatore, India.',
   summary:
     'Full Stack Developer with 5+ years of experience building and scaling web applications across the Laravel/PHP and MERN (MongoDB, Express, React, Node.js) ecosystems. Skilled in designing REST APIs, optimizing MySQL/relational databases, and integrating payment gateways and third-party services. Track record of improving checkout conversion, page performance, and system usability for high-traffic and enterprise platforms. Comfortable owning features end-to-end, from database schema to responsive UI.',
+  conciseAbout:
+    'Full Stack Developer with 5+ years of hands-on production delivery across Laravel/PHP and MERN ecosystems. I own features end-to-end — from MySQL/MSSQL schema design and ICICI payment APIs to responsive React interfaces and AI-assisted engineering workflows.',
   languages: ['Tamil', 'English', 'Arabic', 'Malayalam'],
 };
 
-export const HERO_HIGHLIGHTS = [
+export const HERO_STATS = [
   {
-    value: '5+ Years',
-    label: 'Full-Stack Production Engineering',
-    detail: 'Laravel/PHP & MERN delivery since Feb 2021',
+    value: '5+',
+    label: 'Years of experience',
   },
   {
-    value: '5 Systems',
-    label: 'Enterprise, Gov & POS Platforms',
-    detail: 'ERPs, recruitment portals, builder & kitchen apps',
+    value: '5',
+    label: 'Production systems',
   },
   {
-    value: 'End-to-End',
-    label: 'Database Schema to Responsive UI',
-    detail: 'MySQL, MSSQL, REST APIs, ICICI payment gateways',
-  },
-  {
-    value: 'AI-First',
-    label: 'AI-Assisted Engineering Workflow',
-    detail: 'Claude Code, Codex, OpenCode, Antigravity & MCP',
+    value: '37',
+    label: 'Stack & AI tools',
   },
 ];
 
-export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
+export const CORE_HIGHLIGHTS: CoreHighlight[] = [
   {
-    id: 'interface',
-    label: '01. Frontend & Interfaces',
-    role: 'Responsive web apps, checkout optimization, Core Web Vitals',
-    technologies: ['React.js', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Shadcn UI'],
-    appliedIn: 'TNGASAGL Portal, High-Traffic E-Commerce Platforms',
+    title: 'E-Commerce Checkout Re-Engineering',
+    detail: 'Improved user engagement and conversion on production storefronts',
+    tag: 'Conversion',
   },
   {
-    id: 'api',
-    label: '02. Backend & Payment APIs',
-    role: 'RESTful service design, ICICI payment gateway, 2FA security',
-    technologies: ['Laravel', 'Node.js', 'Express.js', 'CodeIgniter', 'REST APIs'],
-    appliedIn: 'Campuseye Coaching ERP, Builder’s ProMan, TNGASAGL',
+    title: 'High-Traffic Speed & Core Web Vitals',
+    detail: 'Cut page load times across responsive web platforms',
+    tag: 'Performance',
   },
   {
-    id: 'data',
-    label: '03. Relational & Document Data',
-    role: 'Schema architecture, query tuning, large-scale applicant datasets',
-    technologies: ['MySQL', 'MS SQL Server', 'PostgreSQL', 'MongoDB', 'AWS RDS'],
-    appliedIn: 'TNGASAGL, KOT Hotel System, Masscool Operations',
+    title: 'REST APIs & ICICI Payment Gateways',
+    detail: 'Secure Laravel & Express transaction processing at scale',
+    tag: 'Backend',
   },
   {
-    id: 'cloud',
-    label: '04. AI-Assisted Dev & Cloud',
-    role: 'Agentic coding workflows, MCP automation, AWS S3 & VPS deployment',
-    technologies: ['Claude Code', 'Codex', 'OpenCode', 'Antigravity', 'MCP & Plugins', 'AWS S3'],
-    appliedIn: 'High-Velocity Full-Stack Delivery, Automated Skills & Production Deploys',
+    title: 'Enterprise ERP & Epson ePOS Integration',
+    detail: 'Government portals, coaching ERPs, and direct thermal kitchen printing',
+    tag: 'Systems',
+  },
+  {
+    title: 'AI-Assisted Dev & Agent Automation',
+    detail: 'Claude Code, Codex, OpenCode, Antigravity, custom Skills & MCP',
+    tag: 'AI-First',
+  },
+];
+
+export const SERVICES: ServiceItem[] = [
+  {
+    id: 'ai-dev-workflows',
+    icon: 'ai',
+    title: 'AI-Assisted Dev & Automation',
+    description:
+      'Accelerated full-stack delivery using terminal & IDE coding agents, reusable custom Skills, autonomous agent workflows, and Model Context Protocol (MCP) plugins for rapid scaffolding, debugging, and clean production releases.',
+    tags: ['Claude Code', 'Codex', 'OpenCode', 'Antigravity', 'Agents Automation', 'Skills', 'MCP & Plugins'],
+    featured: true,
+  },
+  {
+    id: 'laravel-php',
+    icon: 'laravel',
+    title: 'Laravel & PHP Engineering',
+    description:
+      'End-to-end production platforms on Laravel and CodeIgniter — including REST API architecture, ICICI payment gateway integrations, two-factor authentication (2FA), and maintainable relational modules.',
+    tags: ['Laravel', 'CodeIgniter', 'REST APIs', 'ICICI Payments', '2FA RBAC'],
+  },
+  {
+    id: 'mern-stack',
+    icon: 'mern',
+    title: 'MERN & Modern Frontend',
+    description:
+      'Fast, responsive React.js, Next.js, TypeScript, Tailwind CSS, and Shadcn UI applications backed by Express.js and Node.js, engineered for Core Web Vitals and frictionless checkout conversion.',
+    tags: ['React.js', 'Next.js', 'TypeScript', 'Node.js & Express', 'Tailwind & Shadcn UI'],
+  },
+  {
+    id: 'erp-database-pos',
+    icon: 'erp',
+    title: 'Enterprise ERP, Databases & POS',
+    description:
+      'High-volume government interview portals, NEET/JEE coaching ERPs, hospitality POS with Epson ePOS SDK receipt printing, and tuned MySQL, MS SQL Server, PostgreSQL, MongoDB, and AWS S3/RDS deployments.',
+    tags: ['MySQL & MSSQL', 'PostgreSQL & MongoDB', 'AWS S3 / RDS', 'Epson ePOS SDK'],
   },
 ];
 
 export const PROJECT_FILTERS: { id: ProjectCategory; label: string }[] = [
-  { id: 'all', label: 'All Projects' },
+  { id: 'all', label: 'All Work' },
   { id: 'mern', label: 'MERN Stack' },
   { id: 'laravel-php', label: 'Laravel & PHP' },
   { id: 'enterprise-pos', label: 'Enterprise & POS' },
@@ -205,7 +166,7 @@ export const PROJECTS: ProjectItem[] = [
     id: 'tngasagl',
     index: '01',
     title: 'TNGASAGL',
-    subtitle: 'Tamil Nadu Government Arts & Science Colleges Guest Lecturer Interview System',
+    subtitle: 'Tamil Nadu Govt. Arts & Science Colleges Guest Lecturer Interview System',
     category: 'mern',
     categoryLabel: 'MERN Stack · Government Portal',
     featured: true,
@@ -312,9 +273,23 @@ export const EXPERIENCE: ExperienceItem[] = [
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
+    id: 'ai-tools',
+    category: 'AI-Assisted Dev Tools',
+    description: 'Agentic coding workflows, reusable Skills, and MCP automation.',
+    skills: [
+      'Claude Code',
+      'Codex',
+      'OpenCode',
+      'Antigravity',
+      'Agents Automation',
+      'Skills',
+      'MCP & Plugins',
+    ],
+  },
+  {
     id: 'frontend',
     category: 'Frontend',
-    description: 'Component systems, responsive interfaces, and Core Web Vitals performance.',
+    description: 'Component systems, responsive interfaces, and Core Web Vitals.',
     skills: [
       'HTML',
       'CSS',
@@ -331,7 +306,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     id: 'backend',
     category: 'Backend',
-    description: 'Production PHP/Laravel architectures, Node.js services, and payment gateways.',
+    description: 'Laravel/PHP architectures, Node.js services, and payment APIs.',
     skills: [
       'Laravel',
       'CodeIgniter',
@@ -344,28 +319,14 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     id: 'database',
     category: 'Database',
-    description: 'Relational schema design, query optimization, and managed cloud databases.',
+    description: 'Relational schema design, query optimization, and managed RDS.',
     skills: ['MySQL', 'MS SQL Server', 'PostgreSQL', 'MongoDB', 'AWS RDS'],
   },
   {
     id: 'devops',
     category: 'DevOps & Cloud',
-    description: 'Source control workflows, cloud storage, and production VPS deployment.',
+    description: 'Source control workflows, cloud storage, and VPS deployments.',
     skills: ['GitHub', 'GitLab', 'AWS', 'Hostinger VPS'],
-  },
-  {
-    id: 'ai-tools',
-    category: 'AI-Assisted Dev Tools',
-    description: 'Modern agentic coding workflows, automation skills, and MCP integrations.',
-    skills: [
-      'Claude Code',
-      'Codex',
-      'OpenCode',
-      'Antigravity',
-      'Agents Automation',
-      'Skills',
-      'MCP & Plugins',
-    ],
   },
   {
     id: 'os',

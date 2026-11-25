@@ -1,98 +1,98 @@
-import {
-  Blocks,
-  Cpu,
-  CreditCard,
-  Database,
-  Layers,
-  Server,
-} from 'lucide-react';
-import { motion } from 'motion/react';
-import { SERVICES, type ServiceItem } from '../data/portfolioData';
-import { SectionHeading } from './SectionHeading';
-
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-
-function ServiceIcon({
-  icon,
-  featured,
-}: {
-  icon: ServiceItem['icon'];
-  featured?: boolean;
-}) {
-  const iconClass = featured
-    ? 'h-8 w-8 text-[#FEC544] transition-colors duration-200'
-    : 'h-8 w-8 text-[#8E95A5] transition-colors duration-200 group-hover:text-[#FEC544]';
-
-  switch (icon) {
-    case 'laravel':
-      return <Server className={iconClass} aria-hidden="true" />;
-    case 'mern':
-      return <Layers className={iconClass} aria-hidden="true" />;
-    case 'erp':
-      return <Blocks className={iconClass} aria-hidden="true" />;
-    case 'payments':
-      return <CreditCard className={iconClass} aria-hidden="true" />;
-    case 'database':
-      return <Database className={iconClass} aria-hidden="true" />;
-    case 'ai':
-      return <Cpu className={iconClass} aria-hidden="true" />;
-  }
-}
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Layers, Minus, Plus } from 'lucide-react';
+import { SERVICES } from '../data/portfolioData';
 
 export function ServicesSection() {
+  const [openId, setOpenId] = useState<string>(SERVICES[0].id);
+
+  const handleToggle = (id: string) => {
+    setOpenId((prev) => (prev === id ? '' : id));
+  };
+
   return (
-    <section
-      id="services"
-      aria-labelledby="services-heading"
-      className="scroll-mt-18 bg-[#0A101E] pb-20 sm:pb-24"
-    >
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading id="services-heading" title="SERVICES" />
+    <section id="services" className="scroll-mt-10 py-14 sm:py-16">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#111315] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/10 dark:bg-[#14171D] dark:text-[#F3F5F7]">
+        <Layers className="h-3.5 w-3.5 text-[#00B853] dark:text-[#00E061]" aria-hidden="true" />
+        <span>Services</span>
+      </div>
 
-        <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service, idx) => (
-            <motion.article
-              key={service.id}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 'some' }}
-              transition={{ duration: 0.48, delay: idx * 0.07, ease: EASE_OUT }}
-              className={`devis-card devis-card-hover group flex flex-col items-center rounded-xl px-7 py-10 text-center ${
-                service.featured
-                  ? 'border-[#FEC544]/45 bg-gradient-to-b from-[#131C31] to-[#101624]'
-                  : ''
-              }`}
-            >
-              <div
-                className={`flex h-20 w-20 items-center justify-center rounded-full border bg-[#070D1B] transition-colors duration-200 ${
-                  service.featured
-                    ? 'border-[#FEC544]'
-                    : 'border-[#3F4551] group-hover:border-[#FEC544]'
-                }`}
+      <h2 className="mt-5 font-display text-3xl font-semibold tracking-[-0.02em] text-[#111315] dark:text-white sm:text-4xl">
+        How I help teams ship faster
+      </h2>
+
+      {/* Exact Isak Expandable Editorial Accordion */}
+      <div className="mt-8 divide-y divide-black/[0.08] border-y border-black/[0.08] dark:divide-white/[0.08] dark:border-white/[0.08]">
+        {SERVICES.map((service) => {
+          const isOpen = openId === service.id;
+          const panelId = `service-panel-${service.id}`;
+
+          return (
+            <div key={service.id} className="py-5 sm:py-6">
+              <button
+                type="button"
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                onClick={() => handleToggle(service.id)}
+                className="flex w-full items-center justify-between gap-4 text-left cursor-pointer"
               >
-                <ServiceIcon icon={service.icon} featured={service.featured} />
-              </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span
+                    className={`font-display text-2xl font-medium tracking-tight transition-colors sm:text-[28px] ${
+                      isOpen
+                        ? 'text-[#111315] dark:text-white'
+                        : 'text-[#2D323A] hover:text-[#111315] dark:text-[#D0D5DE] dark:hover:text-white'
+                    }`}
+                  >
+                    {service.title}
+                  </span>
+                  {service.featured && (
+                    <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-[#00A846] dark:text-[#00E061]">
+                      Core Edge
+                    </span>
+                  )}
+                </div>
 
-              {service.featured && (
-                <p className="mt-4 font-mono text-[11px] font-medium tracking-wider text-[#FEC544] uppercase">
-                  Modern Delivery Edge
-                </p>
-              )}
+                <span
+                  aria-hidden="true"
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                    isOpen
+                      ? 'border-[#111315] bg-[#111315] text-[#00E061] dark:border-[#00E061] dark:bg-[#00E061] dark:text-[#0B0D10]'
+                      : 'border-black/[0.1] bg-white text-[#111315] hover:border-black/30 dark:border-white/15 dark:bg-[#14171D] dark:text-[#F3F5F7]'
+                  }`}
+                >
+                  {isOpen ? (
+                    <Minus className="h-4 w-4" />
+                  ) : (
+                    <Plus className="h-4 w-4" />
+                  )}
+                </span>
+              </button>
 
-              <h3
-                className={`${
-                  service.featured ? 'mt-2 text-[#FEC544]' : 'mt-6 text-[#FDFEFF]'
-                } font-display text-xl font-medium transition-colors duration-200 group-hover:text-[#FEC544]`}
-              >
-                {service.title}
-              </h3>
-
-              <p className="mt-3 text-sm leading-relaxed text-[#A9ADB8]">
-                {service.description}
-              </p>
-            </motion.article>
-          ))}
-        </div>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    id={panelId}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-4 sm:pt-5">
+                      <p className="font-mono text-xs leading-relaxed text-[#009944] dark:text-[#00E061]">
+                        {service.tags.join(' · ')}
+                      </p>
+                      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#5F6570] dark:text-[#A3AAB7]">
+                        {service.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

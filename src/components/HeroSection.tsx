@@ -1,263 +1,153 @@
-import { useState } from 'react';
-import { ArrowDownToLine, FileText, Github, Mail, Phone } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import {
-  ARCHITECTURE_LAYERS,
-  PROFILE,
-  RESUME_DOWNLOAD_FILENAME,
-  RESUME_PDF_URL,
-} from '../data/portfolioData';
-import { HeroParticles } from './HeroParticles';
+import { HERO_STATS, PROFILE } from '../data/portfolioData';
 
-interface HeroSectionProps {
-  onOpenResume: () => void;
+function formatLocalStamp(date: Date) {
+  const day = date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+  const time = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  return { day, time };
 }
 
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+export function HeroSection() {
+  const [stamp, setStamp] = useState(() => formatLocalStamp(new Date()));
 
-export function HeroSection({ onOpenResume }: HeroSectionProps) {
-  const [activeLayerId, setActiveLayerId] = useState(ARCHITECTURE_LAYERS[0].id);
-  const activeLayerIndex = Math.max(
-    0,
-    ARCHITECTURE_LAYERS.findIndex((layer) => layer.id === activeLayerId)
-  );
-  const activeLayer = ARCHITECTURE_LAYERS[activeLayerIndex] ?? ARCHITECTURE_LAYERS[0];
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setStamp(formatLocalStamp(new Date()));
+    }, 30000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
-    <section
-      id="home"
-      className="relative scroll-mt-18 overflow-hidden bg-[#080E1E] border-b border-white/8"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] bg-gradient-to-b from-[#0D1426] via-[#0B1222] to-[#070D1B] border-l border-white/8 lg:block"
-      />
-      <div className="devis-hero-stars pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
-      <HeroParticles />
-
-      <div className="relative mx-auto grid min-h-[calc(100vh-4.5rem)] max-w-6xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-12 lg:py-20">
-        {/* Left Hero Column — Staggered entrance choreography */}
-        <div className="lg:col-span-6 lg:pr-8">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.15, ease: EASE_OUT }}
-            className="font-display text-2xl font-normal text-[#FEC544] sm:text-[28px]"
-          >
-            Hello, I’m
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.52, delay: 0.24, ease: EASE_OUT }}
-            className="mt-3 font-display text-[clamp(3.15rem,6.4vw,5.4rem)] font-bold leading-[1.02] tracking-tight text-[#FDFEFF]"
-          >
-            Mohammed{' '}
-            <br />
-            Ilyas
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.48, delay: 0.34, ease: EASE_OUT }}
-            className="mt-5 font-display text-2xl font-light text-[#A9ADB8] sm:text-[32px]"
-          >
-            Full Stack Developer
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.48, delay: 0.42, ease: EASE_OUT }}
-            className="mt-3 text-sm leading-relaxed text-[#A9ADB8]"
-          >
-            Laravel &amp; PHP · MERN Stack ·{' '}
-            <span className="font-medium text-[#FEC544]">
-              AI-Assisted Dev (Claude Code, Codex, MCP)
-            </span>{' '}
-            · Coimbatore, India
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.48, delay: 0.5, ease: EASE_OUT }}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <a
-              href="#contact"
-              className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[#FEC544] px-9 py-3 text-sm font-semibold text-[#070D1B] transition-colors duration-150 hover:bg-[#FFD369] whitespace-nowrap shrink-0"
-            >
-              Hire Me
-            </a>
-
-            <button
-              type="button"
-              onClick={onOpenResume}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 bg-[#101624]/90 px-7 py-3 text-sm font-medium text-[#FDFEFF] backdrop-blur-xs transition-colors duration-150 hover:border-[#FEC544]/50 hover:text-[#FEC544] whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <FileText className="h-4 w-4 text-[#FEC544]" aria-hidden="true" />
-              <span>Preview Resume</span>
-            </button>
-          </motion.div>
+    <section id="home" className="scroll-mt-8 pb-16 pt-2 sm:pb-20">
+      {/* Top Minimal Identity & Live Time Utility Header (Isak signature) */}
+      <div className="flex items-center justify-between gap-4 pb-10 sm:pb-12">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/[0.08] bg-[#F5F7F9] font-display text-sm font-bold text-[#111315] dark:border-white/10 dark:bg-[#161A22] dark:text-[#00E061]">
+            MI
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-[#111315] dark:text-[#F3F5F7]">
+              {PROFILE.name}
+            </p>
+            <p className="text-xs text-[#646870] dark:text-[#9CA3AF]">
+              {PROFILE.role}
+            </p>
+          </div>
         </div>
 
-        {/* Right Hero Column — Dark Architectural Studio Panel + Devis Social Bar */}
-        <motion.div
-          initial={{ opacity: 0, x: 22 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.58, delay: 0.3, ease: EASE_OUT }}
-          className="flex flex-col gap-6 lg:col-span-6 lg:pl-8"
+        <div className="text-right font-mono text-xs leading-snug text-[#646870] tabular-nums dark:text-[#9CA3AF]">
+          <p>{stamp.day}</p>
+          <p className="text-[#111315] dark:text-[#E5E7EB]">{stamp.time}</p>
+        </div>
+      </div>
+
+      {/* Oversized Multi-Accent Isak Editorial Headline */}
+      <motion.h1
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="font-display text-[clamp(2.3rem,4.5vw,3.75rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-[#111315] dark:text-[#F5F7FA]"
+      >
+        I’m building{' '}
+        <span className="whitespace-nowrap text-[#00B853] dark:text-[#00E061]">scalable apps</span>{' '}
+        <span className="my-1 inline-block rounded-full bg-[#111315] px-5 py-0.5 text-[#00E061] dark:bg-[#00E061] dark:text-[#0B0D10]">
+          &amp; AI workflows
+        </span>{' '}
+        that teams rely on
+      </motion.h1>
+
+      {/* Signature Flowing Emerald Ribbon & Rotating Circular Seal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+        className="relative my-8 h-48 w-full overflow-visible sm:my-10 sm:h-56"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 680 220"
+          className="h-full w-full overflow-visible"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <aside
-            aria-label="Full-Stack Architecture Overview"
-            className="devis-card rounded-2xl p-6 sm:p-8 backdrop-blur-xs"
+          <defs>
+            <linearGradient id="isakRibbonGrad" x1="20" y1="120" x2="660" y2="100" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#00E061" stopOpacity="0.12" />
+              <stop offset="28%" stopColor="#00E061" stopOpacity="0.88" />
+              <stop offset="58%" stopColor="#00C853" stopOpacity="1" />
+              <stop offset="85%" stopColor="#34F58C" stopOpacity="0.72" />
+              <stop offset="100%" stopColor="#00E061" stopOpacity="0.08" />
+            </linearGradient>
+          </defs>
+          <motion.path
+            d="M 18 112 C 110 155, 190 95, 290 66 C 410 32, 515 76, 488 148 C 466 208, 355 210, 344 148 C 332 82, 465 92, 655 96"
+            stroke="url(#isakRibbonGrad)"
+            strokeWidth="30"
+            strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0.3 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </svg>
+
+        {/* Rotating Engineering Seal overlapping the ribbon loop */}
+        <div className="absolute left-[46%] top-[44%] flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-black/[0.08] bg-white shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-[#14171D] sm:h-32 sm:w-32">
+          <svg
+            viewBox="0 0 120 120"
+            className="animate-slow-spin h-full w-full p-1.5 text-[#111315] dark:text-[#F3F5F7]"
           >
-            <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
-              <div>
-                <h2 className="font-display text-xl font-semibold text-[#FDFEFF]">
-                  Full-Stack Blueprint
-                </h2>
-                <p className="mt-0.5 text-xs text-[#8E95A5]">
-                  5+ years owning systems from schema to interface
-                </p>
-              </div>
-              <span className="font-mono text-xs text-[#FEC544] tabular-nums">
-                0{activeLayerIndex + 1} / 0{ARCHITECTURE_LAYERS.length}
-              </span>
-            </div>
-
-            <div
-              aria-hidden="true"
-              className="mt-4 grid grid-cols-4 gap-1.5"
+            <defs>
+              <path
+                id="sealCirclePath"
+                d="M 60, 60 m -42, 0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"
+              />
+            </defs>
+            <text
+              fill="currentColor"
+              fontSize="9"
+              fontWeight="600"
+              letterSpacing="2.2"
+              fontFamily="JetBrains Mono, monospace"
             >
-              {ARCHITECTURE_LAYERS.map((layer, idx) => (
-                <div
-                  key={layer.id}
-                  className={`h-1 rounded-full transition-colors duration-200 ${
-                    idx <= activeLayerIndex ? 'bg-[#FEC544]' : 'bg-white/10'
-                  }`}
-                />
-              ))}
-            </div>
+              <textPath href="#sealCirclePath" textLength="255">
+                FULL STACK · LARAVEL · MERN · AI-FIRST ·
+              </textPath>
+            </text>
+          </svg>
+          <div className="absolute flex h-11 w-11 items-center justify-center rounded-full border border-black/15 dark:border-white/20">
+            <span className="font-display text-sm font-bold text-[#111315] dark:text-[#00E061]">
+              MI
+            </span>
+          </div>
+        </div>
+      </motion.div>
 
-            <div
-              role="tablist"
-              aria-label="Engineering stack layers"
-              className="mt-4 flex flex-col gap-1"
-            >
-              {ARCHITECTURE_LAYERS.map((layer) => {
-                const isSelected = layer.id === activeLayer.id;
-                return (
-                  <button
-                    key={layer.id}
-                    type="button"
-                    role="tab"
-                    id={`arch-tab-${layer.id}`}
-                    aria-selected={isSelected}
-                    aria-controls="arch-layer-panel"
-                    onClick={() => setActiveLayerId(layer.id)}
-                    className={`relative flex min-h-[42px] w-full items-center justify-between gap-4 rounded-lg px-3 py-2 text-left transition-colors duration-150 cursor-pointer ${
-                      isSelected
-                        ? 'text-[#FDFEFF]'
-                        : 'text-[#A9ADB8] hover:bg-white/[0.03] hover:text-[#FDFEFF]'
-                    }`}
-                  >
-                    {isSelected && (
-                      <motion.span
-                        layoutId="active-arch-layer"
-                        transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute inset-0 rounded-lg border border-[#FEC544]/40 bg-[#FEC544]/[0.09]"
-                      />
-                    )}
-                    <span
-                      className={`relative z-10 text-sm font-medium ${
-                        isSelected ? 'text-[#FEC544]' : ''
-                      }`}
-                    >
-                      {layer.label}
-                    </span>
-                    <span className="relative z-10 font-mono text-xs text-[#8E95A5] tabular-nums whitespace-nowrap shrink-0">
-                      {layer.technologies.length} tools
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div
-              id="arch-layer-panel"
-              role="tabpanel"
-              aria-labelledby={`arch-tab-${activeLayer.id}`}
-              className="mt-5 border-t border-white/10 pt-4"
-            >
-              <motion.div
-                key={activeLayer.id}
-                initial={{ opacity: 0.35, y: 3 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <p className="text-xs font-medium text-[#8E95A5]">Focus Area</p>
-                <p className="mt-1 text-sm leading-relaxed text-[#FDFEFF]">
-                  {activeLayer.role}
-                </p>
-
-                <p className="mt-3.5 text-xs font-medium text-[#8E95A5]">Core Stack</p>
-                <p className="mt-1 font-mono text-xs leading-relaxed text-[#FEC544]">
-                  {activeLayer.technologies.join(' · ')}
-                </p>
-
-                <p className="mt-3.5 text-xs font-medium text-[#8E95A5]">Production Usage</p>
-                <p className="mt-1 text-sm text-[#A9ADB8]">{activeLayer.appliedIn}</p>
-              </motion.div>
-            </div>
-          </aside>
-
-          {/* Signature Devis Social Connect Strip */}
+      {/* Big Minimalist Stat Counters (Real Resume Numbers Only) */}
+      <div className="grid grid-cols-3 gap-6 border-b border-black/[0.08] pb-12 pt-2 dark:border-white/[0.08] sm:max-w-lg sm:gap-10">
+        {HERO_STATS.map((stat, idx) => (
           <motion.div
+            key={stat.label}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.48, delay: 0.48, ease: EASE_OUT }}
-            className="flex flex-wrap items-center gap-3 rounded-full border border-[#232935] bg-[#101624]/95 px-4 py-2.5 self-start backdrop-blur-xs"
+            transition={{ duration: 0.45, delay: 0.18 + idx * 0.08 }}
           >
-            <a
-              href={PROFILE.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-[36px] items-center gap-2 rounded-full border border-[#232935] bg-[#0A101E] px-3.5 py-1.5 text-xs font-medium text-[#FDFEFF] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-            >
-              <Github className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>GitHub</span>
-            </a>
-
-            <a
-              href={PROFILE.emailHref}
-              className="inline-flex min-h-[36px] items-center gap-2 rounded-full border border-[#232935] bg-[#0A101E] px-3.5 py-1.5 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-            >
-              <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Email</span>
-            </a>
-
-            <a
-              href={PROFILE.phoneHref}
-              className="inline-flex min-h-[36px] items-center gap-2 rounded-full border border-[#232935] bg-[#0A101E] px-3.5 py-1.5 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-            >
-              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Call</span>
-            </a>
-
-            <a
-              href={RESUME_PDF_URL}
-              download={RESUME_DOWNLOAD_FILENAME}
-              className="inline-flex min-h-[36px] items-center gap-2 rounded-full border border-[#232935] bg-[#0A101E] px-3.5 py-1.5 text-xs font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544]"
-            >
-              <ArrowDownToLine className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>CV PDF</span>
-            </a>
+            <p className="font-display text-4xl font-semibold tracking-tight text-[#111315] tabular-nums dark:text-white sm:text-5xl">
+              {stat.value}
+            </p>
+            <p className="mt-1.5 text-xs leading-snug text-[#646870] dark:text-[#9CA3AF] sm:text-sm">
+              {stat.label}
+            </p>
           </motion.div>
-        </motion.div>
+        ))}
       </div>
     </section>
   );

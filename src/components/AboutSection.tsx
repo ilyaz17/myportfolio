@@ -1,146 +1,42 @@
-import { ArrowDownToLine, FileText } from 'lucide-react';
-import { motion } from 'motion/react';
-import {
-  HERO_HIGHLIGHTS,
-  PROFILE,
-  RESUME_DOWNLOAD_FILENAME,
-  RESUME_PDF_URL,
-} from '../data/portfolioData';
-import { SectionHeading } from './SectionHeading';
+import { Sparkles } from 'lucide-react';
+import { CORE_HIGHLIGHTS, PROFILE } from '../data/portfolioData';
 
-interface AboutSectionProps {
-  onOpenResume: () => void;
-}
-
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
-
-const ABOUT_DETAILS = [
-  { label: 'Experience', value: '5+ Years (Feb 2021 – Present)' },
-  { label: 'AI Workflow', value: 'Claude Code, Codex, OpenCode, Antigravity, MCP & Agents' },
-  { label: 'Phone', value: PROFILE.phone, href: PROFILE.phoneHref },
-  { label: 'Email', value: PROFILE.email, href: PROFILE.emailHref },
-  { label: 'From', value: `${PROFILE.location} (Pollachi / Coimbatore)` },
-  { label: 'Language', value: PROFILE.languages.join(', ') },
-  { label: 'GitHub', value: PROFILE.githubHandle, href: PROFILE.githubUrl, external: true },
-];
-
-export function AboutSection({ onOpenResume }: AboutSectionProps) {
+export function AboutSection() {
   return (
-    <section
-      id="about"
-      aria-labelledby="about-heading"
-      className="scroll-mt-18 bg-[#0A101E] py-20 sm:py-24 overflow-x-clip"
-    >
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading id="about-heading" title="ABOUT ME" />
+    <section id="about" className="scroll-mt-10 py-14 sm:py-16">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#111315] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/10 dark:bg-[#14171D] dark:text-[#F3F5F7]">
+        <Sparkles className="h-3.5 w-3.5 text-[#00B853] dark:text-[#00E061]" aria-hidden="true" />
+        <span>About</span>
+      </div>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
-          {/* Left column — Dark Editorial Highlights Profile Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 'some' }}
-            transition={{ duration: 0.55, ease: EASE_OUT }}
-            className="lg:col-span-5"
+      <h2 className="mt-5 font-display text-3xl font-semibold leading-[1.18] tracking-[-0.02em] text-[#111315] dark:text-white sm:text-4xl">
+        Building reliable Laravel &amp; MERN systems with AI-accelerated craft.
+      </h2>
+
+      <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[#5F6570] dark:text-[#A3AAB7]">
+        {PROFILE.conciseAbout}
+      </p>
+
+      {/* Clean Minimalist Highlight Rows (Isak editorial list aesthetic, 100% real impact) */}
+      <div className="mt-9 divide-y divide-black/[0.08] border-y border-black/[0.08] dark:divide-white/[0.08] dark:border-white/[0.08]">
+        {CORE_HIGHLIGHTS.map((item) => (
+          <div
+            key={item.title}
+            className="group flex flex-col justify-between gap-1.5 py-4 transition-colors sm:flex-row sm:items-center sm:gap-6"
           >
-            <div className="devis-card rounded-2xl p-6 sm:p-8">
-              <p className="font-mono text-xs text-[#FEC544]">Engineering Profile</p>
-              <h3 className="mt-2 font-display text-2xl font-semibold text-[#FDFEFF]">
-                End-to-End Delivery Across Laravel &amp; MERN
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#A9ADB8]">
-                Focused on measurable business outcomes — faster page load times, higher checkout
-                conversion, reliable ICICI payment integrations, and resilient relational schemas.
+            <div className="min-w-0">
+              <p className="font-display text-[17px] font-medium text-[#111315] transition-colors group-hover:text-[#009944] dark:text-[#F3F5F7] dark:group-hover:text-[#00E061]">
+                {item.title}
               </p>
-
-              <dl className="mt-7 grid grid-cols-2 gap-5 border-t border-white/10 pt-6">
-                {HERO_HIGHLIGHTS.map((item, idx) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 'some' }}
-                    transition={{ duration: 0.4, delay: 0.1 + idx * 0.07, ease: EASE_OUT }}
-                    className="space-y-1"
-                  >
-                    <dd className="font-display text-2xl font-bold text-[#FEC544] tabular-nums">
-                      {item.value}
-                    </dd>
-                    <dt className="text-xs font-medium text-[#FDFEFF]">{item.label}</dt>
-                    <dd className="text-xs leading-relaxed text-[#8E95A5]">{item.detail}</dd>
-                  </motion.div>
-                ))}
-              </dl>
+              <p className="mt-0.5 text-sm text-[#686E79] dark:text-[#9CA3AF]">
+                {item.detail}
+              </p>
             </div>
-          </motion.div>
-
-          {/* Right column — Devis About bio + structured key-value details + Download CV */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 'some' }}
-            transition={{ duration: 0.55, delay: 0.08, ease: EASE_OUT }}
-            className="lg:col-span-7"
-          >
-            <h3 className="font-display text-3xl font-semibold text-[#FDFEFF] sm:text-4xl">
-              Hi There! I&apos;m {PROFILE.name}
-            </h3>
-            <p className="mt-2 font-display text-xl font-normal text-[#FEC544]">
-              {PROFILE.role}
-            </p>
-
-            <p className="mt-5 text-[15px] leading-[1.75] text-[#A9ADB8]">
-              {PROFILE.summary}
-            </p>
-
-            <dl className="mt-7 space-y-3 text-sm">
-              {ABOUT_DETAILS.map((item) => (
-                <div key={item.label} className="grid grid-cols-12 items-baseline gap-2">
-                  <dt className="col-span-4 font-medium text-[#FDFEFF] sm:col-span-3">
-                    {item.label}
-                  </dt>
-                  <dd className="col-span-8 text-[#A9ADB8] sm:col-span-9">
-                    <span aria-hidden="true" className="mr-3 text-[#6E7585]">
-                      :
-                    </span>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        target={item.external ? '_blank' : undefined}
-                        rel={item.external ? 'noopener noreferrer' : undefined}
-                        className="transition-colors hover:text-[#FEC544]"
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <span>{item.value}</span>
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href={RESUME_PDF_URL}
-                download={RESUME_DOWNLOAD_FILENAME}
-                className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#FEC544] px-8 py-3 text-sm font-semibold text-[#070D1B] transition-colors duration-150 hover:bg-[#FFD369] whitespace-nowrap"
-              >
-                <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
-                <span>Download CV</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={onOpenResume}
-                className="inline-flex min-h-[46px] items-center gap-2 rounded-full border border-[#232935] bg-[#101624] px-6 py-3 text-sm font-medium text-[#FDFEFF] transition-colors hover:border-[#FEC544]/50 hover:text-[#FEC544] whitespace-nowrap cursor-pointer"
-              >
-                <FileText className="h-4 w-4 text-[#FEC544]" aria-hidden="true" />
-                <span>View Full Resume</span>
-              </button>
-            </div>
-          </motion.div>
-        </div>
+            <span className="shrink-0 font-mono text-xs text-[#686E79] dark:text-[#9CA3AF]">
+              {item.tag}
+            </span>
+          </div>
+        ))}
       </div>
     </section>
   );

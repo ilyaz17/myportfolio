@@ -1,168 +1,135 @@
 import { Briefcase, GraduationCap } from 'lucide-react';
-import { motion } from 'motion/react';
 import { EDUCATION, EXPERIENCE, PROFILE } from '../data/portfolioData';
-import { SectionHeading } from './SectionHeading';
 
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+interface TimelineEntry {
+  id: string;
+  period: string;
+  kind: 'work' | 'education';
+  title: string;
+  organization: string;
+  description: string;
+  bullets?: string[];
+  active?: boolean;
+}
 
 export function ExperienceSection() {
-  const primaryRole = EXPERIENCE[0];
-
-  const experienceTimeline = [
-    {
-      title: primaryRole.role,
-      period: primaryRole.period,
-      organization: `${primaryRole.company}, ${primaryRole.location}`,
-      points: primaryRole.highlights.slice(0, 2),
-    },
-    {
-      title: 'Enterprise ERP & ICICI Payment APIs',
-      period: 'Core Delivery',
-      organization: primaryRole.company,
-      points: primaryRole.highlights.slice(2, 4),
-    },
-    {
-      title: 'End-to-End Schema-to-UI Architecture',
-      period: 'Full-Stack Ownership',
-      organization: 'MySQL · MS SQL Server · React · Laravel',
-      points: primaryRole.highlights.slice(4),
-    },
+  const timelineEntries: TimelineEntry[] = [
+    ...EXPERIENCE.map((exp, idx) => ({
+      id: `work-${idx}`,
+      period: exp.period,
+      kind: 'work' as const,
+      title: exp.role,
+      organization: `${exp.company} · ${exp.location}`,
+      description:
+        'Owning end-to-end delivery across high-traffic e-commerce storefronts, enterprise ERPs, ICICI payment integrations, and MySQL/MSSQL + React architectures.',
+      bullets: exp.highlights.slice(0, 3),
+      active: idx === 0,
+    })),
+    ...EDUCATION.map((edu, idx) => ({
+      id: `edu-${idx}`,
+      period: edu.period,
+      kind: 'education' as const,
+      title: edu.degree,
+      organization: `${edu.institution} · ${edu.location}`,
+      description:
+        idx === 0
+          ? 'Undergraduate degree covering software engineering, relational databases, and web application fundamentals.'
+          : 'Secondary & higher secondary foundation.',
+    })),
   ];
 
   return (
-    <section
-      id="resume"
-      aria-labelledby="resume-heading"
-      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24 overflow-x-clip"
-    >
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading id="resume-heading" title="RESUME" />
+    <section id="resume" className="scroll-mt-10 py-14 sm:py-16">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#111315] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/10 dark:bg-[#14171D] dark:text-[#F3F5F7]">
+        <Briefcase className="h-3.5 w-3.5 text-[#00B853] dark:text-[#00E061]" aria-hidden="true" />
+        <span>Journey</span>
+      </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-14">
-          {/* Left column — Devis vertical timeline for Experience */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 'some' }}
-              transition={{ duration: 0.45, ease: EASE_OUT }}
-              className="mb-9 flex items-center gap-4"
+      <h2 className="mt-5 font-display text-3xl font-semibold tracking-[-0.02em] text-[#111315] dark:text-white sm:text-4xl">
+        Experience &amp; Education
+      </h2>
+
+      {/* Exact Isak 2-Column Vertical Emerald Timeline */}
+      <div className="mt-10 space-y-0">
+        {timelineEntries.map((entry, idx) => {
+          const isLast = idx === timelineEntries.length - 1;
+          const Icon = entry.kind === 'work' ? Briefcase : GraduationCap;
+
+          return (
+            <div
+              key={entry.id}
+              className="grid grid-cols-1 gap-3 pb-10 sm:grid-cols-[148px_28px_1fr] sm:gap-5"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#FEC544]">
-                <Briefcase className="h-5 w-5" aria-hidden="true" />
-              </div>
-              <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
-                Experience
-              </h3>
-            </motion.div>
-
-            <ol className="relative ml-3 border-l border-[#232935] pl-8 sm:pl-10 space-y-10">
-              {experienceTimeline.map((entry, idx) => (
-                <motion.li
-                  key={entry.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 'some' }}
-                  transition={{ duration: 0.48, delay: idx * 0.09, ease: EASE_OUT }}
-                  className="group relative"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-1.5 -left-[39px] sm:-left-[47px] h-3.5 w-3.5 rounded-full border-2 border-[#3F4551] bg-[#070D1B] transition-colors duration-200 group-hover:border-[#FEC544] group-hover:bg-[#FEC544]"
-                  />
-
-                  <h4 className="font-display text-xl font-semibold text-[#FEC544]">
-                    {entry.title}
-                  </h4>
-                  <p className="mt-1.5 font-mono text-xs text-[#A9ADB8] tabular-nums">
-                    {entry.period}
-                  </p>
-                  <p className="mt-3 font-display text-base font-medium text-[#FDFEFF]">
-                    {entry.organization}
-                  </p>
-                  <ul className="mt-2.5 space-y-2 text-sm leading-relaxed text-[#A9ADB8]">
-                    {entry.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                </motion.li>
-              ))}
-            </ol>
-          </div>
-
-          {/* Right column — Devis vertical timeline for Education + Languages */}
-          <div className="flex flex-col justify-between gap-10">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, x: 16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 'some' }}
-                transition={{ duration: 0.45, ease: EASE_OUT }}
-                className="mb-9 flex items-center gap-4"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#FEC544]">
-                  <GraduationCap className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
-                  Education
-                </h3>
-              </motion.div>
-
-              <ol className="relative ml-3 border-l border-[#232935] pl-8 sm:pl-10 space-y-10">
-                {EDUCATION.map((edu, idx) => (
-                  <motion.li
-                    key={edu.degree}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 'some' }}
-                    transition={{ duration: 0.48, delay: idx * 0.09, ease: EASE_OUT }}
-                    className="group relative"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-1.5 -left-[39px] sm:-left-[47px] h-3.5 w-3.5 rounded-full border-2 border-[#3F4551] bg-[#070D1B] transition-colors duration-200 group-hover:border-[#FEC544] group-hover:bg-[#FEC544]"
-                    />
-
-                    <h4 className="font-display text-xl font-semibold text-[#FEC544]">
-                      {edu.degree}
-                    </h4>
-                    <p className="mt-1.5 font-mono text-xs text-[#A9ADB8] tabular-nums">
-                      {edu.period}
-                    </p>
-                    <p className="mt-3 font-display text-base font-medium text-[#FDFEFF]">
-                      {edu.institution}
-                    </p>
-                    <p className="mt-1.5 text-sm text-[#A9ADB8]">{edu.location}</p>
-                  </motion.li>
-                ))}
-              </ol>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 'some' }}
-              transition={{ duration: 0.48, delay: 0.16, ease: EASE_OUT }}
-              className="devis-card rounded-xl p-6"
-            >
-              <div className="flex items-baseline justify-between gap-4 border-b border-[#232935] pb-3.5">
-                <h4 className="font-display text-lg font-semibold text-[#FDFEFF]">
-                  Languages
-                </h4>
-                <span className="font-mono text-xs text-[#FEC544] tabular-nums">
-                  {PROFILE.languages.length} Fluent
+              {/* Left Period Column */}
+              <div className="pt-0.5">
+                <span className="font-mono text-xs font-medium text-[#646870] tabular-nums dark:text-[#9CA3AF]">
+                  {entry.period}
                 </span>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-[#A9ADB8]">
-                Direct stakeholder collaboration and technical communication across regional and
-                international teams.
-              </p>
-              <p className="mt-3.5 font-display text-base font-medium text-[#FDFEFF]">
-                {PROFILE.languages.join(' · ')}
-              </p>
-            </motion.div>
-          </div>
-        </div>
+
+              {/* Center Vertical Line + Emerald Dot */}
+              <div className="relative hidden flex-col items-center sm:flex" aria-hidden="true">
+                <span
+                  className={`relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full ${
+                    entry.active
+                      ? 'bg-[#00C853] ring-4 ring-[#00E061]/20'
+                      : 'bg-[#00C853]'
+                  }`}
+                />
+                {!isLast && (
+                  <span
+                    className={`mt-1 w-[2px] flex-1 ${
+                      idx === 0
+                        ? 'bg-gradient-to-b from-[#00C853] to-black/10 dark:to-white/15'
+                        : 'bg-black/10 dark:bg-white/15'
+                    }`}
+                  />
+                )}
+              </div>
+
+              {/* Right Content Column */}
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 text-xs font-medium text-[#646870] dark:text-[#9CA3AF]">
+                  <Icon
+                    className="h-3.5 w-3.5 shrink-0 text-[#00A846] dark:text-[#00E061]"
+                    aria-hidden="true"
+                  />
+                  <span>{entry.organization}</span>
+                </div>
+
+                <h3 className="mt-1.5 font-display text-xl font-semibold text-[#111315] dark:text-[#F3F5F7]">
+                  {entry.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-[#5F6570] dark:text-[#A3AAB7]">
+                  {entry.description}
+                </p>
+
+                {entry.bullets && (
+                  <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#4B515C] dark:text-[#B4BAC6]">
+                    {entry.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-start gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00C853]"
+                        />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Quiet Spoken Languages Strip */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-black/[0.08] pt-5 text-sm dark:border-white/[0.08]">
+        <span className="font-medium text-[#111315] dark:text-[#F3F5F7]">Languages</span>
+        <span className="text-[#5F6570] dark:text-[#A3AAB7]">
+          {PROFILE.languages.join(' · ')}
+        </span>
       </div>
     </section>
   );

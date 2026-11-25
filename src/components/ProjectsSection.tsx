@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { ArrowUpRight, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowUpRight, Sparkles, X } from 'lucide-react';
 import {
   PROJECT_FILTERS,
   PROJECTS,
@@ -9,15 +8,15 @@ import {
 } from '../data/portfolioData';
 import { filterProjects } from '../utils/portfolioLogic';
 import { ProjectDiagram } from './ProjectDiagram';
-import { SectionHeading } from './SectionHeading';
-
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export function ProjectsSection() {
-  const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
+  const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
-  const visibleProjects = filterProjects(PROJECTS, activeCategory);
+  const visibleProjects = useMemo(
+    () => filterProjects(PROJECTS, activeFilter),
+    [activeFilter]
+  );
 
   useEffect(() => {
     if (!selectedProject) return;
@@ -31,250 +30,165 @@ export function ProjectsSection() {
   }, [selectedProject]);
 
   return (
-    <section
-      id="portfolio"
-      aria-labelledby="projects-heading"
-      className="scroll-mt-18 bg-[#0A101E] py-20 sm:py-24"
-    >
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeading id="projects-heading" title="PORTFOLIO" />
-
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 'some' }}
-          transition={{ duration: 0.45, ease: EASE_OUT }}
-          className="flex flex-col items-center gap-4 text-center"
-        >
-          <div
-            role="group"
-            aria-label="Filter projects by technology stack"
-            className="inline-flex max-w-full flex-wrap sm:flex-nowrap items-center justify-center gap-1 rounded-full border border-[#232935] bg-[#101624] p-1 shrink-0"
-          >
-            {PROJECT_FILTERS.map((filter) => {
-              const isActive = activeCategory === filter.id;
-              return (
-                <button
-                  key={filter.id}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setActiveCategory(filter.id)}
-                  className={`relative min-h-[40px] rounded-full px-4 py-2 text-xs font-semibold transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer ${
-                    isActive
-                      ? 'text-[#070D1B]'
-                      : 'text-[#A9ADB8] hover:text-[#FDFEFF]'
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="project-filter-active"
-                      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute inset-0 rounded-full bg-[#FEC544]"
-                    />
-                  )}
-                  <span className="relative z-10">{filter.label}</span>
-                </button>
-              );
-            })}
+    <section id="portfolio" className="scroll-mt-10 py-14 sm:py-16">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#111315] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:border-white/10 dark:bg-[#14171D] dark:text-[#F3F5F7]">
+            <Sparkles className="h-3.5 w-3.5 text-[#00B853] dark:text-[#00E061]" aria-hidden="true" />
+            <span>Work Highlights</span>
           </div>
+          <h2 className="mt-5 font-display text-3xl font-semibold tracking-[-0.02em] text-[#111315] dark:text-white sm:text-4xl">
+            Production systems shipped
+          </h2>
+        </div>
 
-          <p className="text-xs text-[#8E95A5] tabular-nums" data-testid="project-count">
-            Showing {visibleProjects.length} of {PROJECTS.length} production systems
-          </p>
-        </motion.div>
-
+        {/* Clean Single-Row Filter */}
         <div
-          className={`mt-10 grid grid-cols-1 gap-6 ${
-            activeCategory === 'all'
-              ? 'md:grid-cols-2 lg:grid-cols-6'
-              : visibleProjects.length === 1
-                ? 'lg:grid-cols-1'
-                : 'md:grid-cols-2'
-          }`}
+          role="group"
+          aria-label="Filter projects by stack"
+          className="flex flex-wrap items-center gap-1.5"
         >
-          {visibleProjects.map((project, idx) => {
-            const isBentoWide = activeCategory === 'all' && project.featured;
-            const colSpanClass =
-              activeCategory === 'all'
-                ? isBentoWide
-                  ? 'md:col-span-2 lg:col-span-4'
-                  : 'lg:col-span-2'
-                : '';
-
+          {PROJECT_FILTERS.map((filter) => {
+            const isActive = activeFilter === filter.id;
             return (
-              <motion.article
-                key={project.id}
-                data-testid={`project-card-${project.id}`}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 'some' }}
-                transition={{ duration: 0.46, delay: idx * 0.06, ease: EASE_OUT }}
-                className={`devis-card devis-card-hover group flex flex-col justify-between rounded-xl p-6 sm:p-7 ${colSpanClass}`}
+              <button
+                key={filter.id}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                  isActive
+                    ? 'bg-[#111315] text-[#00E061] dark:bg-[#00E061] dark:text-[#0B0D10]'
+                    : 'border border-black/[0.09] bg-white text-[#5F6570] hover:border-black/25 hover:text-[#111315] dark:border-white/10 dark:bg-[#14171D] dark:text-[#A3AAB7] dark:hover:text-white'
+                }`}
               >
-                <div>
-                  <div className="flex items-center justify-between gap-4 text-xs text-[#8E95A5]">
-                    <span className="font-mono tabular-nums">
-                      <span className="text-[#FEC544]">{project.index}</span> ·{' '}
-                      {project.categoryLabel}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-[#FDFEFF] transition-colors group-hover:text-[#FEC544]">
-                    {project.title}
-                  </h3>
-
-                  <p className="mt-1 text-sm font-medium text-[#D6DAE2]">
-                    {project.subtitle}
-                  </p>
-
-                  <div className="mt-5">
-                    <ProjectDiagram type={project.diagramType} compact={!isBentoWide} />
-                  </div>
-
-                  <p className="mt-5 text-sm leading-relaxed text-[#A9ADB8]">
-                    {project.summary}
-                  </p>
-                </div>
-
-                <div className="mt-6 border-t border-[#232935] pt-4">
-                  <p className="text-xs font-medium text-[#8E95A5]">
-                    {project.scope}
-                  </p>
-                  <p className="mt-1.5 font-mono text-[11.5px] leading-relaxed text-[#C5CAD4]">
-                    {project.stack.join(' · ')}
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedProject(project)}
-                    aria-label={`Inspect architecture for ${project.title}`}
-                    className="mt-4 inline-flex min-h-[40px] items-center gap-1.5 text-sm font-semibold text-[#FEC544] transition-colors hover:text-[#FFD369] whitespace-nowrap cursor-pointer"
-                  >
-                    <span>Inspect Architecture</span>
-                    <ArrowUpRight
-                      className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
-              </motion.article>
+                {filter.label}
+              </button>
             );
           })}
         </div>
       </div>
 
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            key="project-modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.16 }}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="project-modal-title"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#040812]/85 p-4 backdrop-blur-md sm:p-6"
-            onClick={(event) => {
-              if (event.target === event.currentTarget) {
-                setSelectedProject(null);
-              }
-            }}
+      {/* Isak Bold Dark-Framed Showcase Cards on Clean Canvas */}
+      <div data-testid="project-grid" className="mt-8 space-y-6">
+        {visibleProjects.map((project) => (
+          <article
+            key={project.id}
+            data-testid={`project-card-${project.id}`}
+            className="group overflow-hidden rounded-[28px] border border-black/[0.08] bg-[#0E1116] p-5 text-white shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-transform duration-200 hover:-translate-y-0.5 dark:border-white/[0.09] sm:p-6"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: 8 }}
-              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="devis-card max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl p-6 sm:p-8"
-            >
-              <div className="flex items-start justify-between gap-4 border-b border-[#232935] pb-5">
-                <div>
-                  <p className="font-mono text-xs text-[#8E95A5] tabular-nums">
-                    <span className="text-[#FEC544]">{selectedProject.index}</span> ·{' '}
-                    {selectedProject.categoryLabel}
-                  </p>
-                  <h3
-                    id="project-modal-title"
-                    className="mt-2 font-display text-2xl font-semibold text-[#FDFEFF] sm:text-3xl"
-                  >
-                    {selectedProject.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-[#D6DAE2]">{selectedProject.subtitle}</p>
-                </div>
+            <ProjectDiagram type={project.diagramType} compact={!project.featured} />
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedProject(null)}
-                  aria-label="Close project details"
-                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#232935] bg-[#070D1B] text-[#D6DAE2] transition-colors hover:border-[#FEC544] hover:text-[#FEC544] cursor-pointer"
+            <div className="mt-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div className="min-w-0">
+                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#00E061]">
+                  {project.index} · {project.categoryLabel}
+                </p>
+                <h3 className="mt-1.5 font-display text-2xl font-semibold tracking-tight text-white">
+                  {project.title}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-[#A7AEBC]">
+                  {project.subtitle}
+                </p>
+                <p className="mt-2.5 font-mono text-xs text-[#858D9C]">
+                  {project.stack.join(' · ')}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedProject(project)}
+                aria-label={`Inspect ${project.title} architecture`}
+                className="inline-flex min-h-[42px] shrink-0 items-center gap-1.5 self-start rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#111315] transition-colors hover:bg-[#00E061] sm:self-end whitespace-nowrap cursor-pointer"
+              >
+                <span>Inspect</span>
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {/* Clean Architecture Detail Modal */}
+      {selectedProject && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setSelectedProject(null);
+            }
+          }}
+        >
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[28px] border border-black/10 bg-white p-6 text-[#111315] shadow-2xl dark:border-white/10 dark:bg-[#13161C] dark:text-[#F3F5F7] sm:p-7">
+            <div className="flex items-start justify-between gap-4 border-b border-black/[0.08] pb-4 dark:border-white/10">
+              <div>
+                <p className="font-mono text-xs font-medium text-[#00A846] dark:text-[#00E061]">
+                  {selectedProject.index} · {selectedProject.categoryLabel}
+                </p>
+                <h3
+                  id="project-modal-title"
+                  className="mt-1 font-display text-2xl font-semibold text-[#111315] dark:text-white"
                 >
-                  <X className="h-5 w-5" aria-hidden="true" />
-                </button>
+                  {selectedProject.title}
+                </h3>
+                <p className="mt-0.5 text-sm text-[#5F6570] dark:text-[#9CA3AF]">
+                  {selectedProject.subtitle}
+                </p>
               </div>
+              <button
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close project details"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 text-[#111315] transition-colors hover:border-[#00C853] hover:text-[#00A846] dark:border-white/15 dark:text-[#F3F5F7] dark:hover:text-[#00E061] cursor-pointer"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
 
-              <div className="mt-6">
-                <ProjectDiagram type={selectedProject.diagramType} />
-              </div>
+            <div className="mt-5">
+              <ProjectDiagram type={selectedProject.diagramType} />
+            </div>
 
-              <div className="mt-6 space-y-6">
-                <div>
-                  <h4 className="text-xs font-medium text-[#8E95A5]">System Overview</h4>
-                  <p className="mt-2 text-sm leading-relaxed text-[#D6DAE2]">
-                    {selectedProject.summary}
-                  </p>
-                </div>
+            <p className="mt-5 text-sm leading-relaxed text-[#4B515C] dark:text-[#C4C9D4]">
+              {selectedProject.summary}
+            </p>
 
-                <div>
-                  <h4 className="text-xs font-medium text-[#8E95A5]">
-                    Engineering Scope &amp; Key Deliverables
-                  </h4>
-                  <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-[#A9ADB8]">
-                    {selectedProject.architectureHighlights.map((point) => (
-                      <li key={point} className="flex gap-3">
-                        <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FEC544]" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div className="mt-5">
+              <h4 className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#00A846] dark:text-[#00E061]">
+                Engineering Scope
+              </h4>
+              <ul className="mt-2.5 space-y-2 text-sm text-[#4B515C] dark:text-[#B4BAC6]">
+                {selectedProject.architectureHighlights.map((highlight) => (
+                  <li key={highlight} className="flex items-start gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00C853]"
+                    />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                <div className="grid grid-cols-1 gap-4 border-t border-[#232935] pt-5 sm:grid-cols-2">
-                  <div>
-                    <h4 className="text-xs font-medium text-[#8E95A5]">Technology Stack</h4>
-                    <p className="mt-1.5 font-mono text-xs leading-relaxed text-[#FEC544]">
-                      {selectedProject.stack.join(' · ')}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-medium text-[#8E95A5]">Ownership Scope</h4>
-                    <p className="mt-1.5 text-sm leading-relaxed text-[#D6DAE2]">
-                      {selectedProject.scope}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-end gap-4 border-t border-[#232935] pt-5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedProject(null)}
-                  className="min-h-[42px] rounded-full border border-[#232935] px-5 py-2 text-sm font-medium text-[#D6DAE2] transition-colors hover:border-[#FEC544]/50 hover:text-[#FDFEFF] cursor-pointer"
-                >
-                  Close
-                </button>
-                <a
-                  href="#contact"
-                  onClick={() => setSelectedProject(null)}
-                  className="inline-flex min-h-[42px] items-center rounded-full bg-[#FEC544] px-6 py-2 text-sm font-semibold text-[#070D1B] transition-colors hover:bg-[#FFD369]"
-                >
-                  Discuss Similar Project
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.08] pt-4 dark:border-white/10">
+              <p className="font-mono text-xs text-[#646870] dark:text-[#9CA3AF]">
+                {selectedProject.stack.join(' · ')}
+              </p>
+              <a
+                href="#contact"
+                onClick={() => setSelectedProject(null)}
+                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#00E061] px-4 py-2 text-xs font-semibold text-[#0B0D10] transition-colors hover:bg-[#19F073] whitespace-nowrap"
+              >
+                <span>Discuss similar build</span>
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
