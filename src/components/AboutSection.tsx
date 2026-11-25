@@ -1,4 +1,5 @@
 import { ArrowDownToLine, FileText } from 'lucide-react';
+import { motion } from 'motion/react';
 import {
   HERO_HIGHLIGHTS,
   PROFILE,
@@ -11,8 +12,11 @@ interface AboutSectionProps {
   onOpenResume: () => void;
 }
 
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
 const ABOUT_DETAILS = [
   { label: 'Experience', value: '5+ Years (Feb 2021 – Present)' },
+  { label: 'AI Workflow', value: 'Claude Code, Codex, OpenCode, Antigravity, MCP & Agents' },
   { label: 'Phone', value: PROFILE.phone, href: PROFILE.phoneHref },
   { label: 'Email', value: PROFILE.email, href: PROFILE.emailHref },
   { label: 'From', value: `${PROFILE.location} (Pollachi / Coimbatore)` },
@@ -25,14 +29,20 @@ export function AboutSection({ onOpenResume }: AboutSectionProps) {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="scroll-mt-18 bg-[#0A101E] py-20 sm:py-24"
+      className="scroll-mt-18 bg-[#0A101E] py-20 sm:py-24 overflow-x-clip"
     >
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading id="about-heading" title="ABOUT ME" />
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
           {/* Left column — Dark Editorial Highlights Profile Card */}
-          <div className="lg:col-span-5">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 'some' }}
+            transition={{ duration: 0.55, ease: EASE_OUT }}
+            className="lg:col-span-5"
+          >
             <div className="devis-card rounded-2xl p-6 sm:p-8">
               <p className="font-mono text-xs text-[#FEC544]">Engineering Profile</p>
               <h3 className="mt-2 font-display text-2xl font-semibold text-[#FDFEFF]">
@@ -44,21 +54,34 @@ export function AboutSection({ onOpenResume }: AboutSectionProps) {
               </p>
 
               <dl className="mt-7 grid grid-cols-2 gap-5 border-t border-white/10 pt-6">
-                {HERO_HIGHLIGHTS.map((item) => (
-                  <div key={item.label} className="space-y-1">
+                {HERO_HIGHLIGHTS.map((item, idx) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 'some' }}
+                    transition={{ duration: 0.4, delay: 0.1 + idx * 0.07, ease: EASE_OUT }}
+                    className="space-y-1"
+                  >
                     <dd className="font-display text-2xl font-bold text-[#FEC544] tabular-nums">
                       {item.value}
                     </dd>
                     <dt className="text-xs font-medium text-[#FDFEFF]">{item.label}</dt>
                     <dd className="text-xs leading-relaxed text-[#8E95A5]">{item.detail}</dd>
-                  </div>
+                  </motion.div>
                 ))}
               </dl>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right column — Devis About bio + structured key-value details + Download CV */}
-          <div className="lg:col-span-7">
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 'some' }}
+            transition={{ duration: 0.55, delay: 0.08, ease: EASE_OUT }}
+            className="lg:col-span-7"
+          >
             <h3 className="font-display text-3xl font-semibold text-[#FDFEFF] sm:text-4xl">
               Hi There! I&apos;m {PROFILE.name}
             </h3>
@@ -116,7 +139,7 @@ export function AboutSection({ onOpenResume }: AboutSectionProps) {
                 <span>View Full Resume</span>
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

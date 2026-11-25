@@ -1,6 +1,9 @@
 import { Briefcase, GraduationCap } from 'lucide-react';
+import { motion } from 'motion/react';
 import { EDUCATION, EXPERIENCE, PROFILE } from '../data/portfolioData';
 import { SectionHeading } from './SectionHeading';
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export function ExperienceSection() {
   const primaryRole = EXPERIENCE[0];
@@ -30,7 +33,7 @@ export function ExperienceSection() {
     <section
       id="resume"
       aria-labelledby="resume-heading"
-      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24"
+      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24 overflow-x-clip"
     >
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading id="resume-heading" title="RESUME" />
@@ -38,18 +41,31 @@ export function ExperienceSection() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-14">
           {/* Left column — Devis vertical timeline for Experience */}
           <div>
-            <div className="mb-9 flex items-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 'some' }}
+              transition={{ duration: 0.45, ease: EASE_OUT }}
+              className="mb-9 flex items-center gap-4"
+            >
               <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#FEC544]">
                 <Briefcase className="h-5 w-5" aria-hidden="true" />
               </div>
               <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
                 Experience
               </h3>
-            </div>
+            </motion.div>
 
             <ol className="relative ml-3 border-l border-[#232935] pl-8 sm:pl-10 space-y-10">
-              {experienceTimeline.map((entry) => (
-                <li key={entry.title} className="group relative">
+              {experienceTimeline.map((entry, idx) => (
+                <motion.li
+                  key={entry.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 'some' }}
+                  transition={{ duration: 0.48, delay: idx * 0.09, ease: EASE_OUT }}
+                  className="group relative"
+                >
                   <span
                     aria-hidden="true"
                     className="absolute top-1.5 -left-[39px] sm:-left-[47px] h-3.5 w-3.5 rounded-full border-2 border-[#3F4551] bg-[#070D1B] transition-colors duration-200 group-hover:border-[#FEC544] group-hover:bg-[#FEC544]"
@@ -69,7 +85,7 @@ export function ExperienceSection() {
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
-                </li>
+                </motion.li>
               ))}
             </ol>
           </div>
@@ -77,18 +93,31 @@ export function ExperienceSection() {
           {/* Right column — Devis vertical timeline for Education + Languages */}
           <div className="flex flex-col justify-between gap-10">
             <div>
-              <div className="mb-9 flex items-center gap-4">
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 'some' }}
+                transition={{ duration: 0.45, ease: EASE_OUT }}
+                className="mb-9 flex items-center gap-4"
+              >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#232935] bg-[#101624] text-[#FEC544]">
                   <GraduationCap className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
                   Education
                 </h3>
-              </div>
+              </motion.div>
 
               <ol className="relative ml-3 border-l border-[#232935] pl-8 sm:pl-10 space-y-10">
-                {EDUCATION.map((edu) => (
-                  <li key={edu.degree} className="group relative">
+                {EDUCATION.map((edu, idx) => (
+                  <motion.li
+                    key={edu.degree}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 'some' }}
+                    transition={{ duration: 0.48, delay: idx * 0.09, ease: EASE_OUT }}
+                    className="group relative"
+                  >
                     <span
                       aria-hidden="true"
                       className="absolute top-1.5 -left-[39px] sm:-left-[47px] h-3.5 w-3.5 rounded-full border-2 border-[#3F4551] bg-[#070D1B] transition-colors duration-200 group-hover:border-[#FEC544] group-hover:bg-[#FEC544]"
@@ -104,12 +133,18 @@ export function ExperienceSection() {
                       {edu.institution}
                     </p>
                     <p className="mt-1.5 text-sm text-[#A9ADB8]">{edu.location}</p>
-                  </li>
+                  </motion.li>
                 ))}
               </ol>
             </div>
 
-            <div className="devis-card rounded-xl p-6">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 'some' }}
+              transition={{ duration: 0.48, delay: 0.16, ease: EASE_OUT }}
+              className="devis-card rounded-xl p-6"
+            >
               <div className="flex items-baseline justify-between gap-4 border-b border-[#232935] pb-3.5">
                 <h4 className="font-display text-lg font-semibold text-[#FDFEFF]">
                   Languages
@@ -125,7 +160,7 @@ export function ExperienceSection() {
               <p className="mt-3.5 font-display text-base font-medium text-[#FDFEFF]">
                 {PROFILE.languages.join(' · ')}
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

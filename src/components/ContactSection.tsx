@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowDownToLine, Check, Copy, Github, Mail, MapPin, Phone } from 'lucide-react';
+import { motion } from 'motion/react';
 import {
   PROFILE,
   RESUME_DOWNLOAD_FILENAME,
@@ -19,6 +20,8 @@ const INITIAL_FORM: ContactFormInput = {
   subject: '',
   message: '',
 };
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export function ContactSection() {
   const [form, setForm] = useState<ContactFormInput>(INITIAL_FORM);
@@ -60,14 +63,20 @@ export function ContactSection() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24"
+      className="scroll-mt-18 border-t border-white/6 bg-[#070D1B] py-20 sm:py-24 overflow-x-clip"
     >
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading id="contact-heading" title="CONTACT" />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
           {/* Left column — Devis "Just say Hello" form */}
-          <div className="lg:col-span-6">
+          <motion.div
+            initial={{ opacity: 0, x: -22 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 'some' }}
+            transition={{ duration: 0.52, ease: EASE_OUT }}
+            className="lg:col-span-6"
+          >
             <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
               Just say Hello
             </h3>
@@ -233,10 +242,16 @@ export function ContactSection() {
                 </div>
               </form>
             )}
-          </div>
+          </motion.div>
 
           {/* Right column — Devis "Contact Info" with circular outlined icon rows */}
-          <div className="lg:col-span-6">
+          <motion.div
+            initial={{ opacity: 0, x: 22 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 'some' }}
+            transition={{ duration: 0.52, delay: 0.08, ease: EASE_OUT }}
+            className="lg:col-span-6"
+          >
             <h3 className="font-display text-3xl font-semibold text-[#FDFEFF]">
               Contact Info
             </h3>
@@ -375,7 +390,7 @@ export function ContactSection() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

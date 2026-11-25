@@ -7,10 +7,13 @@ import {
   RESUME_DOWNLOAD_FILENAME,
   RESUME_PDF_URL,
 } from '../data/portfolioData';
+import { HeroParticles } from './HeroParticles';
 
 interface HeroSectionProps {
   onOpenResume: () => void;
 }
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 export function HeroSection({ onOpenResume }: HeroSectionProps) {
   const [activeLayerId, setActiveLayerId] = useState(ARCHITECTURE_LAYERS[0].id);
@@ -25,34 +28,64 @@ export function HeroSection({ onOpenResume }: HeroSectionProps) {
       id="home"
       className="relative scroll-mt-18 overflow-hidden bg-[#080E1E] border-b border-white/8"
     >
-      <div className="devis-hero-stars pointer-events-none absolute inset-0 opacity-75" aria-hidden="true" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] bg-gradient-to-b from-[#0D1426] via-[#0B1222] to-[#070D1B] border-l border-white/8 lg:block"
       />
+      <div className="devis-hero-stars pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
+      <HeroParticles />
 
       <div className="relative mx-auto grid min-h-[calc(100vh-4.5rem)] max-w-6xl grid-cols-1 items-center gap-12 px-6 py-16 lg:grid-cols-12 lg:py-20">
-        {/* Left Hero Column — Exact Devis typographic rhythm */}
+        {/* Left Hero Column — Staggered entrance choreography */}
         <div className="lg:col-span-6 lg:pr-8">
-          <p className="font-display text-2xl font-normal text-[#FEC544] sm:text-[28px]">
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.15, ease: EASE_OUT }}
+            className="font-display text-2xl font-normal text-[#FEC544] sm:text-[28px]"
+          >
             Hello, I’m
-          </p>
+          </motion.p>
 
-          <h1 className="mt-3 font-display text-[clamp(3.15rem,6.4vw,5.4rem)] font-bold leading-[1.02] tracking-tight text-[#FDFEFF]">
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.52, delay: 0.24, ease: EASE_OUT }}
+            className="mt-3 font-display text-[clamp(3.15rem,6.4vw,5.4rem)] font-bold leading-[1.02] tracking-tight text-[#FDFEFF]"
+          >
             Mohammed{' '}
             <br />
             Ilyas
-          </h1>
+          </motion.h1>
 
-          <p className="mt-5 font-display text-2xl font-light text-[#A9ADB8] sm:text-[32px]">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.34, ease: EASE_OUT }}
+            className="mt-5 font-display text-2xl font-light text-[#A9ADB8] sm:text-[32px]"
+          >
             Full Stack Developer
-          </p>
+          </motion.p>
 
-          <p className="mt-3 text-sm text-[#8E95A5]">
-            Laravel &amp; PHP · MERN Stack · Coimbatore, India
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.42, ease: EASE_OUT }}
+            className="mt-3 text-sm leading-relaxed text-[#A9ADB8]"
+          >
+            Laravel &amp; PHP · MERN Stack ·{' '}
+            <span className="font-medium text-[#FEC544]">
+              AI-Assisted Dev (Claude Code, Codex, MCP)
+            </span>{' '}
+            · Coimbatore, India
+          </motion.p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.5, ease: EASE_OUT }}
+            className="mt-9 flex flex-wrap items-center gap-4"
+          >
             <a
               href="#contact"
               className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-[#FEC544] px-9 py-3 text-sm font-semibold text-[#070D1B] transition-colors duration-150 hover:bg-[#FFD369] whitespace-nowrap shrink-0"
@@ -63,19 +96,24 @@ export function HeroSection({ onOpenResume }: HeroSectionProps) {
             <button
               type="button"
               onClick={onOpenResume}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 bg-[#101624] px-7 py-3 text-sm font-medium text-[#FDFEFF] transition-colors duration-150 hover:border-[#FEC544]/50 hover:text-[#FEC544] whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 bg-[#101624]/90 px-7 py-3 text-sm font-medium text-[#FDFEFF] backdrop-blur-xs transition-colors duration-150 hover:border-[#FEC544]/50 hover:text-[#FEC544] whitespace-nowrap shrink-0 cursor-pointer"
             >
               <FileText className="h-4 w-4 text-[#FEC544]" aria-hidden="true" />
               <span>Preview Resume</span>
             </button>
-          </div>
+          </motion.div>
         </div>
 
         {/* Right Hero Column — Dark Architectural Studio Panel + Devis Social Bar */}
-        <div className="flex flex-col gap-6 lg:col-span-6 lg:pl-8">
+        <motion.div
+          initial={{ opacity: 0, x: 22 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.58, delay: 0.3, ease: EASE_OUT }}
+          className="flex flex-col gap-6 lg:col-span-6 lg:pl-8"
+        >
           <aside
             aria-label="Full-Stack Architecture Overview"
-            className="devis-card rounded-2xl p-6 sm:p-8"
+            className="devis-card rounded-2xl p-6 sm:p-8 backdrop-blur-xs"
           >
             <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-4">
               <div>
@@ -178,7 +216,12 @@ export function HeroSection({ onOpenResume }: HeroSectionProps) {
           </aside>
 
           {/* Signature Devis Social Connect Strip */}
-          <div className="flex flex-wrap items-center gap-3 rounded-full border border-[#232935] bg-[#101624] px-4 py-2.5 self-start">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.48, ease: EASE_OUT }}
+            className="flex flex-wrap items-center gap-3 rounded-full border border-[#232935] bg-[#101624]/95 px-4 py-2.5 self-start backdrop-blur-xs"
+          >
             <a
               href={PROFILE.githubUrl}
               target="_blank"
@@ -213,8 +256,8 @@ export function HeroSection({ onOpenResume }: HeroSectionProps) {
               <ArrowDownToLine className="h-3.5 w-3.5" aria-hidden="true" />
               <span>CV PDF</span>
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

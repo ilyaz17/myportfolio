@@ -47,9 +47,16 @@ export interface ArchitectureLayer {
 
 export interface ServiceItem {
   id: string;
-  icon: 'laravel' | 'mern' | 'erp' | 'payments' | 'database' | 'pos';
+  icon: 'laravel' | 'mern' | 'erp' | 'payments' | 'database' | 'ai';
   title: string;
   description: string;
+  featured?: boolean;
+}
+
+export interface AiWorkflowPillar {
+  title: string;
+  summary: string;
+  tools: string[];
 }
 
 export const RESUME_PDF_URL = '/assets/aistudio/Mohammed_Ilyas_Resume__1__c1e233fa.pdf';
@@ -73,9 +80,9 @@ export const SERVICES: ServiceItem[] = [
   {
     id: 'erp-portals',
     icon: 'erp',
-    title: 'Enterprise ERP & Portals',
+    title: 'Enterprise ERP & POS Systems',
     description:
-      'High-volume government recruitment portals and coaching center ERPs built to streamline applicant data and internal workflows.',
+      'High-volume government portals, coaching center ERPs, and hotel kitchen ordering systems with direct Epson ePOS SDK receipt printing.',
   },
   {
     id: 'payments-apis',
@@ -92,11 +99,27 @@ export const SERVICES: ServiceItem[] = [
       'Schema design and query optimization across MySQL, MS SQL Server, PostgreSQL, MongoDB, AWS S3, RDS, and Linux VPS.',
   },
   {
-    id: 'pos-ai',
-    icon: 'pos',
-    title: 'POS Hardware & AI Workflows',
+    id: 'ai-dev-workflows',
+    icon: 'ai',
+    title: 'AI-Assisted Dev & Automation',
     description:
-      'Hospitality kitchen ordering with direct Epson ePOS SDK receipt printing alongside modern Claude Code, Codex, and MCP automation.',
+      'Accelerated production shipping with Claude Code, Codex, OpenCode, Antigravity, reusable Skills, Agents Automation, and MCP plugins.',
+    featured: true,
+  },
+];
+
+export const AI_WORKFLOW_PILLARS: AiWorkflowPillar[] = [
+  {
+    title: 'Agentic Coding & Refactoring',
+    summary:
+      'Using terminal and IDE coding agents to accelerate Laravel/MERN feature scaffolding, debugging, test generation, and clean code reviews.',
+    tools: ['Claude Code', 'Codex', 'OpenCode', 'Antigravity'],
+  },
+  {
+    title: 'Agents Automation, Skills & MCP',
+    summary:
+      'Building repeatable engineering workflows with custom reusable Skills, autonomous agent pipelines, and Model Context Protocol (MCP) plugins.',
+    tools: ['Agents Automation', 'Skills', 'MCP & Plugins'],
   },
 ];
 
@@ -133,9 +156,9 @@ export const HERO_HIGHLIGHTS = [
     detail: 'MySQL, MSSQL, REST APIs, ICICI payment gateways',
   },
   {
-    value: '4 Languages',
-    label: 'Cross-Team Communication',
-    detail: 'Tamil, English, Arabic, Malayalam',
+    value: 'AI-First',
+    label: 'AI-Assisted Engineering Workflow',
+    detail: 'Claude Code, Codex, OpenCode, Antigravity & MCP',
   },
 ];
 
@@ -163,10 +186,10 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
   },
   {
     id: 'cloud',
-    label: '04. Cloud, Hardware & AI Tooling',
-    role: 'AWS S3 storage, VPS hosting, Epson ePOS SDK, MCP workflows',
-    technologies: ['AWS & S3', 'Hostinger VPS', 'Linux', 'Epson ePOS SDK', 'Claude Code & MCP'],
-    appliedIn: 'Campuseye S3/Firebase, KOT Receipt Printing, Production Deploys',
+    label: '04. AI-Assisted Dev & Cloud',
+    role: 'Agentic coding workflows, MCP automation, AWS S3 & VPS deployment',
+    technologies: ['Claude Code', 'Codex', 'OpenCode', 'Antigravity', 'MCP & Plugins', 'AWS S3'],
+    appliedIn: 'High-Velocity Full-Stack Delivery, Automated Skills & Production Deploys',
   },
 ];
 

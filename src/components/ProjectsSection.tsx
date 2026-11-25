@@ -11,6 +11,8 @@ import { filterProjects } from '../utils/portfolioLogic';
 import { ProjectDiagram } from './ProjectDiagram';
 import { SectionHeading } from './SectionHeading';
 
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
 export function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -37,7 +39,13 @@ export function ProjectsSection() {
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading id="projects-heading" title="PORTFOLIO" />
 
-        <div className="flex flex-col items-center gap-4 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 'some' }}
+          transition={{ duration: 0.45, ease: EASE_OUT }}
+          className="flex flex-col items-center gap-4 text-center"
+        >
           <div
             role="group"
             aria-label="Filter projects by technology stack"
@@ -73,7 +81,7 @@ export function ProjectsSection() {
           <p className="text-xs text-[#8E95A5] tabular-nums" data-testid="project-count">
             Showing {visibleProjects.length} of {PROJECTS.length} production systems
           </p>
-        </div>
+        </motion.div>
 
         <div
           className={`mt-10 grid grid-cols-1 gap-6 ${
@@ -84,7 +92,7 @@ export function ProjectsSection() {
                 : 'md:grid-cols-2'
           }`}
         >
-          {visibleProjects.map((project) => {
+          {visibleProjects.map((project, idx) => {
             const isBentoWide = activeCategory === 'all' && project.featured;
             const colSpanClass =
               activeCategory === 'all'
@@ -94,9 +102,13 @@ export function ProjectsSection() {
                 : '';
 
             return (
-              <article
+              <motion.article
                 key={project.id}
                 data-testid={`project-card-${project.id}`}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 'some' }}
+                transition={{ duration: 0.46, delay: idx * 0.06, ease: EASE_OUT }}
                 className={`devis-card devis-card-hover group flex flex-col justify-between rounded-xl p-6 sm:p-7 ${colSpanClass}`}
               >
                 <div>
@@ -145,7 +157,7 @@ export function ProjectsSection() {
                     />
                   </button>
                 </div>
-              </article>
+              </motion.article>
             );
           })}
         </div>
