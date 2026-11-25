@@ -61,14 +61,14 @@ export function ContactSection() {
       aria-labelledby="contact-heading"
       className="border-t border-white/10"
     >
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-22">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="flex flex-col justify-between lg:col-span-5">
             <div>
-              <p className="text-sm font-medium text-[#9BA3B2]">04. Contact</p>
+              <p className="font-mono text-xs font-medium text-[#F2B705]">04. Contact</p>
               <h2
                 id="contact-heading"
-                className="mt-2 font-display text-3xl font-semibold tracking-tight text-[#F4F5F7] sm:text-4xl"
+                className="mt-2 font-display text-3xl font-semibold tracking-tight text-[#F7F8FA] sm:text-4xl"
               >
                 Start a Conversation
               </h2>
@@ -81,7 +81,7 @@ export function ContactSection() {
                 <div className="flex items-center justify-between gap-4 py-4">
                   <div className="min-w-0">
                     <dt className="text-xs font-medium text-[#9BA3B2]">Email</dt>
-                    <dd className="mt-1 truncate text-sm font-medium text-[#F4F5F7]">
+                    <dd className="mt-1 truncate text-sm font-medium text-[#F7F8FA]">
                       <a
                         href={PROFILE.emailHref}
                         className="transition-colors hover:text-[#F2B705]"
@@ -94,7 +94,7 @@ export function ContactSection() {
                     type="button"
                     onClick={() => handleCopy('email', PROFILE.email)}
                     aria-label="Copy email address"
-                    className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-white/15 px-3 py-1.5 text-xs font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F4F5F7] whitespace-nowrap shrink-0 cursor-pointer"
+                    className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-white/14 bg-[#12151C] px-3 py-1.5 text-xs font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F7F8FA] whitespace-nowrap shrink-0 cursor-pointer"
                   >
                     {copiedField === 'email' ? (
                       <>
@@ -113,7 +113,7 @@ export function ContactSection() {
                 <div className="flex items-center justify-between gap-4 py-4">
                   <div className="min-w-0">
                     <dt className="text-xs font-medium text-[#9BA3B2]">Phone</dt>
-                    <dd className="mt-1 font-mono text-sm font-medium text-[#F4F5F7] tabular-nums">
+                    <dd className="mt-1 font-mono text-sm font-medium text-[#F7F8FA] tabular-nums">
                       <a
                         href={PROFILE.phoneHref}
                         className="transition-colors hover:text-[#F2B705]"
@@ -126,7 +126,7 @@ export function ContactSection() {
                     type="button"
                     onClick={() => handleCopy('phone', PROFILE.phone)}
                     aria-label="Copy phone number"
-                    className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-white/15 px-3 py-1.5 text-xs font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F4F5F7] whitespace-nowrap shrink-0 cursor-pointer"
+                    className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-white/14 bg-[#12151C] px-3 py-1.5 text-xs font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F7F8FA] whitespace-nowrap shrink-0 cursor-pointer"
                   >
                     {copiedField === 'phone' ? (
                       <>
@@ -145,7 +145,7 @@ export function ContactSection() {
                 <div className="flex items-center justify-between gap-4 py-4">
                   <div>
                     <dt className="text-xs font-medium text-[#9BA3B2]">GitHub</dt>
-                    <dd className="mt-1 text-sm font-medium text-[#F4F5F7]">
+                    <dd className="mt-1 text-sm font-medium text-[#F7F8FA]">
                       <a
                         href={PROFILE.githubUrl}
                         target="_blank"
@@ -174,35 +174,35 @@ export function ContactSection() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-[#111317] p-6 sm:p-8 lg:col-span-7">
+          <div className="surface-card rounded-2xl p-6 sm:p-8 lg:col-span-7">
             {submittedInquiry ? (
               <div role="status" className="space-y-6 py-4">
                 <div>
-                  <p className="text-xs font-semibold text-[#F2B705]">Inquiry Ready</p>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-[#F4F5F7]">
+                  <p className="font-mono text-xs font-medium text-[#F2B705]">Inquiry Ready</p>
+                  <h3 className="mt-2 font-display text-2xl font-semibold text-[#F7F8FA]">
                     Thank you, {submittedInquiry.name}.
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-[#B4BAC5]">
                     Your inquiry has been prepared for{' '}
-                    <span className="font-medium text-[#F4F5F7]">{PROFILE.email}</span>. Open your
-                    email client below to deliver it directly, or edit and compose a new note.
+                    <span className="font-medium text-[#F7F8FA]">{PROFILE.email}</span>. Open your
+                    email client below to deliver it directly, or compose a new note.
                   </p>
                 </div>
 
                 <div className="space-y-3 border-y border-white/10 py-5 text-sm">
                   <div className="flex flex-wrap justify-between gap-2">
                     <span className="text-[#9BA3B2]">From</span>
-                    <span className="text-[#F4F5F7]">
+                    <span className="text-[#F7F8FA]">
                       {submittedInquiry.name} · {submittedInquiry.email}
                     </span>
                   </div>
                   <div className="flex flex-wrap justify-between gap-2">
                     <span className="text-[#9BA3B2]">Subject</span>
-                    <span className="text-[#F4F5F7]">{submittedInquiry.subject}</span>
+                    <span className="text-[#F7F8FA]">{submittedInquiry.subject}</span>
                   </div>
                   <div className="pt-2">
                     <span className="block text-xs text-[#9BA3B2]">Message</span>
-                    <p className="mt-1.5 leading-relaxed text-[#D1D6DF]">
+                    <p className="mt-1.5 leading-relaxed text-[#D8DDE6]">
                       {submittedInquiry.message}
                     </p>
                   </div>
@@ -220,7 +220,7 @@ export function ContactSection() {
                   <button
                     type="button"
                     onClick={() => setSubmittedInquiry(null)}
-                    className="min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-sm font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F4F5F7] cursor-pointer"
+                    className="min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-sm font-medium text-[#D1D6DF] transition-colors hover:border-white/30 hover:text-[#F7F8FA] cursor-pointer"
                   >
                     Send Another Message
                   </button>
@@ -228,8 +228,8 @@ export function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-5">
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-[#F4F5F7]">
+                <div className="border-b border-white/10 pb-4">
+                  <h3 className="font-display text-xl font-semibold text-[#F7F8FA]">
                     Send a Project or Hiring Brief
                   </h3>
                   <p className="mt-1 text-sm text-[#9BA3B2]">
@@ -241,7 +241,7 @@ export function ContactSection() {
                   <div>
                     <label
                       htmlFor="contact-name"
-                      className="block text-xs font-medium text-[#C5CBD6]"
+                      className="block text-xs font-medium text-[#C8CFDB]"
                     >
                       Your Name
                     </label>
@@ -258,7 +258,7 @@ export function ContactSection() {
                       aria-invalid={Boolean(errors.name)}
                       aria-describedby={errors.name ? 'contact-name-error' : undefined}
                       placeholder="e.g. Karthik Sundaram"
-                      className="mt-2 min-h-[44px] w-full rounded-lg border border-white/15 bg-[#08090B] px-3.5 py-2.5 text-sm text-[#F4F5F7] placeholder:text-[#707887] focus:border-[#F2B705] focus:outline-none"
+                      className="mt-2 min-h-[44px] w-full rounded-xl border border-white/14 bg-[#090B0F] px-3.5 py-2.5 text-sm text-[#F7F8FA] placeholder:text-[#707887] transition-colors focus:border-[#F2B705] focus:outline-none"
                     />
                     {errors.name && (
                       <p id="contact-name-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
@@ -270,7 +270,7 @@ export function ContactSection() {
                   <div>
                     <label
                       htmlFor="contact-email"
-                      className="block text-xs font-medium text-[#C5CBD6]"
+                      className="block text-xs font-medium text-[#C8CFDB]"
                     >
                       Email Address
                     </label>
@@ -287,7 +287,7 @@ export function ContactSection() {
                       aria-invalid={Boolean(errors.email)}
                       aria-describedby={errors.email ? 'contact-email-error' : undefined}
                       placeholder="you@company.com"
-                      className="mt-2 min-h-[44px] w-full rounded-lg border border-white/15 bg-[#08090B] px-3.5 py-2.5 text-sm text-[#F4F5F7] placeholder:text-[#707887] focus:border-[#F2B705] focus:outline-none"
+                      className="mt-2 min-h-[44px] w-full rounded-xl border border-white/14 bg-[#090B0F] px-3.5 py-2.5 text-sm text-[#F7F8FA] placeholder:text-[#707887] transition-colors focus:border-[#F2B705] focus:outline-none"
                     />
                     {errors.email && (
                       <p id="contact-email-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
@@ -300,7 +300,7 @@ export function ContactSection() {
                 <div>
                   <label
                     htmlFor="contact-subject"
-                    className="block text-xs font-medium text-[#C5CBD6]"
+                    className="block text-xs font-medium text-[#C8CFDB]"
                   >
                     Subject (Optional)
                   </label>
@@ -313,14 +313,14 @@ export function ContactSection() {
                       setForm((prev) => ({ ...prev, subject: event.target.value }))
                     }
                     placeholder="e.g. Full-Stack Developer Role or ERP Build"
-                    className="mt-2 min-h-[44px] w-full rounded-lg border border-white/15 bg-[#08090B] px-3.5 py-2.5 text-sm text-[#F4F5F7] placeholder:text-[#707887] focus:border-[#F2B705] focus:outline-none"
+                    className="mt-2 min-h-[44px] w-full rounded-xl border border-white/14 bg-[#090B0F] px-3.5 py-2.5 text-sm text-[#F7F8FA] placeholder:text-[#707887] transition-colors focus:border-[#F2B705] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="contact-message"
-                    className="block text-xs font-medium text-[#C5CBD6]"
+                    className="block text-xs font-medium text-[#C8CFDB]"
                   >
                     Message
                   </label>
@@ -337,7 +337,7 @@ export function ContactSection() {
                     aria-invalid={Boolean(errors.message)}
                     aria-describedby={errors.message ? 'contact-message-error' : undefined}
                     placeholder="Share project scope, timeline, or role details..."
-                    className="mt-2 w-full rounded-lg border border-white/15 bg-[#08090B] px-3.5 py-3 text-sm text-[#F4F5F7] placeholder:text-[#707887] focus:border-[#F2B705] focus:outline-none"
+                    className="mt-2 w-full rounded-xl border border-white/14 bg-[#090B0F] px-3.5 py-3 text-sm text-[#F7F8FA] placeholder:text-[#707887] transition-colors focus:border-[#F2B705] focus:outline-none"
                   />
                   {errors.message && (
                     <p id="contact-message-error" role="alert" className="mt-1.5 text-xs text-[#F87171]">
@@ -349,7 +349,7 @@ export function ContactSection() {
                 <div className="pt-1">
                   <button
                     type="submit"
-                    className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#F2B705] px-6 py-2.5 text-sm font-semibold text-[#08090B] transition-colors duration-150 hover:bg-[#FFD043] whitespace-nowrap cursor-pointer"
+                    className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#F2B705] px-6 py-2.5 text-sm font-semibold text-[#08090B] shadow-[0_10px_28px_-12px_rgba(242,183,5,0.5)] transition-colors duration-150 hover:bg-[#FFD043] whitespace-nowrap cursor-pointer"
                   >
                     Send Message
                   </button>

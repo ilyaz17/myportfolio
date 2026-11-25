@@ -38,14 +38,14 @@ export function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="resume-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 backdrop-blur-md sm:p-6"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose();
         }
       }}
     >
-      <div className="flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#111317]">
+      <div className="surface-card flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-6">
           <div>
             <h2
